@@ -1,0 +1,8 @@
+main: pl.pickaxe.largesk.LargeSk
+name: LargeSk
+version: 0.1
+description: An addon for Skript with some cool features.
+author: Nicofisi
+website: http://me.pickaxe.pl/
+depend: [Skript]
+softdepend: [AAC]
