@@ -5,5 +5,7 @@
 	<classpathentry kind="lib" path="/home/nicofisi/Pobrane/AAC.jar"/>
 	<classpathentry kind="lib" path="/home/nicofisi/Pobrane/Stare/spigot-api-1.8.8-R0.1-SNAPSHOT-latest-shaded.jar"/>
 	<classpathentry kind="lib" path="/home/nicofisi/Pobrane/Skript 2.2 Fixes V8b.jar"/>
+	<classpathentry kind="lib" path="/home/nicofisi/Pobrane/findbugs-3.0.1/lib/findbugs.jar"/>
+	<classpathentry kind="lib" path="/home/nicofisi/Pobrane/SkinsRestorer-v10.5.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

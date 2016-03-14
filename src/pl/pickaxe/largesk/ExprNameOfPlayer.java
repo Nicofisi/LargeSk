@@ -1,6 +1,5 @@
 package pl.pickaxe.largesk;
 
-import org.eclipse.jdt.annotation.Nullable;
 import javax.annotation.Nullable;
 
 import org.bukkit.event.Event;
@@ -29,20 +28,18 @@ public class ExprNameOfPlayer extends SimpleExpression<String> {
 	@Override
 	public boolean init(Expression<?>[] expr, int matchedPattern, Kleenean arg2, ParseResult arg3) {
 		player = (Expression<Player>) expr[0];
-		return false;
+		return true;
 	}
 
 	@Override
 	public String toString(@Nullable Event arg0, boolean arg1) {
 		return "name of player";
-		return null;
 	}
 
 	@Override
 	@Nullable
-	protected String[] get(Event arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	protected String[] get(Event e) {
+		return new String[]{ player.getSingle(e).getName()};
 	}
 
 }
