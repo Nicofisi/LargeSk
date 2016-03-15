@@ -44,13 +44,13 @@ public class LargeSk extends JavaPlugin {
 		
 		//AAC
 		if (getServer().getPluginManager().isPluginEnabled("AAC")) {
-			getLogger().info("You've got AAC, wow. You are so rich ^^ I'll collaborate!");
+			getLogger().info("You've got AAC, wow. You are soooo rich! I'll collaborate!");
 			Skript.registerCondition(CondIsBypassed.class, "[aac] %player%('s| is) bypass(ed|ing) aac");
 			Skript.registerCondition(CondOnGround.class, "[aac] %player%('s| is) (on ground|not in air)");
 			Skript.registerExpression(ExprAacPing.class, Integer.class, ExpressionType.PROPERTY, "aac (ping of %player%|%player%'s ping)", "[aac] (ping of %player%|%player%'s ping) by aac");
 			Skript.registerEffect(EffReloadAAC.class, "aac reload [config[s]]","reload aac [config[s]]","reload config[s] of aac");
 			Skript.registerEffect(EffReloadPermissionCache.class, "aac reload permission(s|[s] cache)","reload permission(s|[s] cache) of aac","reload aac's permission(s|[s] cache)");
-			Skript.registerCondition(CondCheckEnabled.class, "[aac ](check %HackType%|%HackType% check) is (enabled|on|running)");
+			Skript.registerCondition(CondCheckEnabled.class, "[aac ](check %-hacktype%|%-hacktype% check) is (enabled|on|running)");
 		}
 		
 		//SkinsRestorer
