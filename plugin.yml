@@ -3,6 +3,6 @@ name: LargeSk
 version: 0.4
 description: An addon for Skript with some cool features.
 author: Nicofisi
-website: http://pickaxe.pl/
+website: http://github.com/Nicofisi/LargeSk
 depend: [Skript]
 softdepend: [AAC]
