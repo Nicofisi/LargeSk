@@ -9,7 +9,7 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 import me.konsolas.aac.api.AACAPIProvider;
 
-public class EffReloadAAC extends Effect {
+public class EffReloadPermissionCache extends Effect {
 
 	@Override
 	public boolean init(Expression<?>[] arg0, int arg1, Kleenean arg2, ParseResult arg3) {
@@ -18,13 +18,13 @@ public class EffReloadAAC extends Effect {
 
 	@Override
 	public String toString(@Nullable Event arg0, boolean arg1) {
-		return "reload AAC";
+		return "aac reload permission cache";
 	}
 
 	@Override
 	protected void execute(Event arg0) {
 		if (AACAPIProvider.isAPILoaded() == true) {
-			AACAPIProvider.getAPI().reloadAAC();
+			AACAPIProvider.getAPI().reloadPermissionCache();
 		}
 	}
 

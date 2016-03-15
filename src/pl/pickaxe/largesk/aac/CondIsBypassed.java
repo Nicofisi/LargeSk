@@ -8,9 +8,9 @@ import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
-import me.konsolas.aac.api.AACAPI;
+import me.konsolas.aac.api.AACAPIProvider;
 
-public class CondIsPlayerOnGround extends Condition {
+public class CondIsBypassed extends Condition {
 
 	private Expression<Player> p;
 	
@@ -23,14 +23,17 @@ public class CondIsPlayerOnGround extends Condition {
 
 	@Override
 	public String toString(@Nullable Event arg0, boolean arg1) {
-		return "is player on ground";
+		return "aac player is bypassed";
 	}
 
 	@Override
 	public boolean check(Event e) {
-		if (AACAPI.isPlayerOnGround(p.getSingle(e)) == true) {
+		if (AACAPIProvider.isAPILoaded() && AACAPIProvider.getAPI().isBypassed(p.getSingle(e)))
+		{
 			return true;
-		} else {
+		}
+		else
+		{
 			return false;
 		}
 	}
