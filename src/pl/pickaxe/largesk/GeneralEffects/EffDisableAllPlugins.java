@@ -1,6 +1,6 @@
 package pl.pickaxe.largesk.GeneralEffects;
 
-import org.bukkit.Server;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 
@@ -11,7 +11,6 @@ import ch.njol.util.Kleenean;
 
 public class EffDisableAllPlugins extends Effect {
 	
-	private Server sr;
 	@Override
 	public boolean init(Expression<?>[] arg0, int arg1, Kleenean arg2, ParseResult arg3) {
 		return true;
@@ -24,7 +23,7 @@ public class EffDisableAllPlugins extends Effect {
 
 	@Override
 	protected void execute(Event arg0) {
-		sr.getPluginManager().disablePlugins();
+		Bukkit.getPluginManager().disablePlugins();
 	}
 
 }
