@@ -10,6 +10,7 @@ import ch.njol.skript.lang.util.SimpleEvent;
 import pl.pickaxe.largesk.GeneralEffects.EffDisableAllPlugins;
 import pl.pickaxe.largesk.GeneralExpressions.ExprFullTime;
 import pl.pickaxe.largesk.SkinsRestorer.ExprSkinOfPlayer;
+import pl.pickaxe.largesk.aac.CondCheckEnabled;
 import pl.pickaxe.largesk.aac.CondIsBypassed;
 import pl.pickaxe.largesk.aac.CondOnGround;
 import pl.pickaxe.largesk.aac.EffReloadAAC;
@@ -44,6 +45,7 @@ public class LargeSk extends JavaPlugin {
 			Skript.registerExpression(ExprAacPing.class, Integer.class, ExpressionType.PROPERTY, "aac (ping of %player%|%player%'s ping)", "[aac] (ping of %player%|%player%'s ping) by aac");
 			Skript.registerEffect(EffReloadAAC.class, "aac reload [config[s]]","reload aac [config[s]]","reload config[s] of aac");
 			Skript.registerEffect(EffReloadPermissionCache.class, "aac reload permission(s|[s] cache)","reload permission(s|[s] cache) of aac","reload aac's permission(s|[s] cache)");
+			Skript.registerCondition(CondCheckEnabled.class, "[aac ](check %HackType%|%HackType% check) is (enabled|on|running)");
 		}
 		
 		//SkinsRestorer
