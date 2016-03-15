@@ -41,7 +41,7 @@ public class ExprFullTime extends SimpleExpression<Long>
 	@Override
 	public String toString(@Nullable Event arg0, boolean arg1)
 	{
-		return "full time";
+		return "full time of world";
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package pl.pickaxe.largesk.aac;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 
@@ -10,16 +9,14 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.konsolas.aac.api.AACAPIProvider;
 
-public class ExprAacPing extends SimpleExpression<Integer>
+public class ExprAacTps extends SimpleExpression<Double>
 {
-	// aac ping
-	
-	private Expression<Player> player;
+	// AAC TPS
 	
 	@Override
-	public Class<? extends Integer> getReturnType()
+	public Class<? extends Double> getReturnType()
 	{
-		return Integer.class;
+		return Double.class;
 	}
 
 	@Override
@@ -28,11 +25,9 @@ public class ExprAacPing extends SimpleExpression<Integer>
 		return true;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] expr, int arg1, Kleenean arg2, ParseResult arg3)
 	{
-		player = (Expression<Player>) expr[0];
 		return true;
 	}
 
@@ -44,15 +39,15 @@ public class ExprAacPing extends SimpleExpression<Integer>
 
 	@Override
 	@Nullable
-	protected Integer[] get(Event e)
+	protected Double[] get(Event e)
 	{
 		if (AACAPIProvider.isAPILoaded())
 		{
-			return new Integer[]{AACAPIProvider.getAPI().getPing(player.getSingle(e))};
+			return new Double[]{AACAPIProvider.getAPI().getTPS()};
 		}
 		else
 		{
-			return new Integer[]{0};
+			return new Double[]{0.0};
 		}
 	}
 	

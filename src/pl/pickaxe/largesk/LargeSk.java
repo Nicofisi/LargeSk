@@ -14,9 +14,13 @@ import pl.pickaxe.largesk.SkinsRestorer.ExprSkinOfPlayer;
 import pl.pickaxe.largesk.aac.CondCheckEnabled;
 import pl.pickaxe.largesk.aac.CondIsBypassed;
 import pl.pickaxe.largesk.aac.CondOnGround;
+import pl.pickaxe.largesk.aac.EffDisableCheck;
+import pl.pickaxe.largesk.aac.EffEnableCheck;
 import pl.pickaxe.largesk.aac.EffReloadAAC;
 import pl.pickaxe.largesk.aac.EffReloadPermissionCache;
 import pl.pickaxe.largesk.aac.ExprAacPing;
+import pl.pickaxe.largesk.aac.ExprAacTps;
+import pl.pickaxe.largesk.aac.ExprViolationLevel;
 import pl.pickaxe.largesk.util.EnumClassInfo;
 
 public class LargeSk extends JavaPlugin {
@@ -47,10 +51,14 @@ public class LargeSk extends JavaPlugin {
 			getLogger().info("You've got AAC, wow. You are soooo rich! I'll collaborate!");
 			Skript.registerCondition(CondIsBypassed.class, "[aac] %player%('s| is) bypass(ed|ing) aac");
 			Skript.registerCondition(CondOnGround.class, "[aac] %player%('s| is) (on ground|not in air)");
+			Skript.registerCondition(CondCheckEnabled.class, "[aac ](check %-hacktype%|%-hacktype% check) is (enabled|on|running)");
 			Skript.registerExpression(ExprAacPing.class, Integer.class, ExpressionType.PROPERTY, "aac (ping of %player%|%player%'s ping)", "[aac] (ping of %player%|%player%'s ping) by aac");
+			Skript.registerExpression(ExprAacTps.class, Double.class, ExpressionType.SIMPLE, "[aac] tps","tps (of|by) aac");
+			Skript.registerExpression(ExprViolationLevel.class, Integer.class, ExpressionType.PROPERTY, "%player%['s][ aac] [hack[s]|violation[s]|cheat[s]] level of %hacktype%","[aac ] %hacktype% [hack[s]|violation[s]|cheat[s]] level of %player%");
 			Skript.registerEffect(EffReloadAAC.class, "aac reload [config[s]]","reload aac [config[s]]","reload config[s] of aac");
 			Skript.registerEffect(EffReloadPermissionCache.class, "aac reload permission(s|[s] cache)","reload permission(s|[s] cache) of aac","reload aac's permission(s|[s] cache)");
-			Skript.registerCondition(CondCheckEnabled.class, "[aac ](check %-hacktype%|%-hacktype% check) is (enabled|on|running)");
+			Skript.registerEffect(EffEnableCheck.class, "enable ([hack[ ]]check %hacktype%|%hacktype% [hack[ ]]check)");
+			Skript.registerEffect(EffDisableCheck.class, "disable ([hack[ ]]check %hacktype%|%hacktype% [hack[ ]]check)");
 		}
 		
 		//SkinsRestorer
