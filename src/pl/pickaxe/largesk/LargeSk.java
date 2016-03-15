@@ -25,7 +25,7 @@ public class LargeSk extends JavaPlugin {
 		Skript.registerEvent("Amazing Player Level Change", SimpleEvent.class, PlayerLevelChangeEvent.class, "amazing player level change");
 		
 		//Real
-		Skript.registerExpression(ExprFullTime.class, Long.class, ExpressionType.PROPERTY, "[full|total] time of %world%","%world%'s [full|total] time");
+		Skript.registerExpression(ExprFullTime.class, Long.class, ExpressionType.PROPERTY, "(full|total) time of %world%","%world%'s (full|total) time");
 		//Skript.registerExpression(ExprCakeSlicesEaten.class, Integer.class, ExpressionType.PROPERTY, "[the] [(amount|number) of] (slices eaten|eaten slices) of %block%");
 		Skript.registerEffect(EffDisableAllPlugins.class, "disable all plugins","disable every plugin");
 		
