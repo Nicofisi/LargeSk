@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.util.SimpleEvent;
+import me.konsolas.aac.api.HackType;
 import pl.pickaxe.largesk.GeneralEffects.EffDisableAllPlugins;
 import pl.pickaxe.largesk.GeneralExpressions.ExprFullTime;
 import pl.pickaxe.largesk.SkinsRestorer.ExprSkinOfPlayer;
@@ -16,6 +17,7 @@ import pl.pickaxe.largesk.aac.CondOnGround;
 import pl.pickaxe.largesk.aac.EffReloadAAC;
 import pl.pickaxe.largesk.aac.EffReloadPermissionCache;
 import pl.pickaxe.largesk.aac.ExprAacPing;
+import pl.pickaxe.largesk.util.EnumClassInfo;
 
 public class LargeSk extends JavaPlugin {
 	
@@ -23,6 +25,9 @@ public class LargeSk extends JavaPlugin {
 	
 	public void onEnable() {
 		Skript.registerAddon(this);
+		
+		//Different Stuff
+		EnumClassInfo.create(HackType.class, "hacktype").register();
 		
 		//Learning
 		Skript.registerExpression(ExprNameOfPlayer.class, String.class, ExpressionType.PROPERTY, "the name of the wonderful player %player%", "%player%'s wonderful name");
