@@ -10,6 +10,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
+import ch.njol.util.coll.CollectionUtils;
 
 public class ExprFullTime extends SimpleExpression<Long>
 {
@@ -64,9 +65,26 @@ public class ExprFullTime extends SimpleExpression<Long>
 		{
 			world.getSingle(e).setFullTime(0);
 		}
+		else if (mode == ChangeMode.REMOVE)
+		{
+			if (world.getSingle(e).getFullTime() > (Long)delta[0])
+			{
+				world.getSingle(e).setFullTime(world.getSingle(e).getFullTime() - (Long)delta[0]);
+			}
+			else 
+			{
+				world.getSingle(e).setFullTime(0);
+			}
+		}
 	}
 	
-	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
+		if (mode == ChangeMode.SET || mode == ChangeMode.ADD || mode == ChangeMode.RESET || mode == ChangeMode.REMOVE)
+			return CollectionUtils.array(Long.class);
+		return null;
+	}	
 	
 	
 }
