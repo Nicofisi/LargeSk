@@ -57,8 +57,8 @@ public class LargeSk extends JavaPlugin {
 			Skript.registerExpression(ExprViolationLevel.class, Integer.class, ExpressionType.PROPERTY, "%player%['s][ aac] [hack[s]|violation[s]|cheat[s]] level of %hacktype%","[aac ] %hacktype% [hack[s]|violation[s]|cheat[s]] level of %player%");
 			Skript.registerEffect(EffReloadAAC.class, "aac reload [config[s]]","reload aac [config[s]]","reload config[s] of aac");
 			Skript.registerEffect(EffReloadPermissionCache.class, "aac reload permission(s|[s] cache)","reload permission(s|[s] cache) of aac","reload aac's permission(s|[s] cache)");
-			Skript.registerEffect(EffEnableCheck.class, "enable ([hack[ ]]check %hacktype%|%hacktype% [hack[ ]]check)");
-			Skript.registerEffect(EffDisableCheck.class, "disable ([hack[ ]]check %hacktype%|%hacktype% [hack[ ]]check)");
+			Skript.registerEffect(EffEnableCheck.class, "enable ([hack[ ]]check %-hacktype%|%-hacktype% [hack[ ]]check)");
+			Skript.registerEffect(EffDisableCheck.class, "disable ([hack[ ]]check %-hacktype%|%-hacktype% [hack[ ]]check)");
 		}
 		
 		//SkinsRestorer
