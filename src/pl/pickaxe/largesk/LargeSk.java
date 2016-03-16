@@ -13,16 +13,17 @@ import java.util.Objects;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.util.SimpleEvent;
+import ch.njol.skript.registrations.EventValues;
+import ch.njol.skript.util.Getter;
 import me.konsolas.aac.api.HackType;
-import pl.pickaxe.largesk.GeneralEffects.EffDisableAllPlugins;
-import pl.pickaxe.largesk.GeneralExpressions.ExprFullTime;
-import pl.pickaxe.largesk.SkinsRestorer.ExprSkinOfPlayer;
 import pl.pickaxe.largesk.aac.CondCheckEnabled;
 import pl.pickaxe.largesk.aac.CondIsBypassed;
 import pl.pickaxe.largesk.aac.CondOnGround;
@@ -33,10 +34,14 @@ import pl.pickaxe.largesk.aac.EffReloadPermissionCache;
 import pl.pickaxe.largesk.aac.ExprAacPing;
 import pl.pickaxe.largesk.aac.ExprAacTps;
 import pl.pickaxe.largesk.aac.ExprViolationLevel;
+import pl.pickaxe.largesk.effects.EffDisableAllPlugins;
+import pl.pickaxe.largesk.events.EvtPlayerViolation;
+import pl.pickaxe.largesk.expressions.ExprFullTime;
+import pl.pickaxe.largesk.skinsrestorer.ExprSkinOfPlayer;
 import pl.pickaxe.largesk.util.EnumClassInfo;
 import pl.pickaxe.largesk.util.Metrics;
 
-public class LargeSk extends JavaPlugin {
+public class LargeSk extends JavaPlugin implements Listener {
 	
 	public static File configf;
     public static FileConfiguration config;
@@ -49,6 +54,9 @@ public class LargeSk extends JavaPlugin {
 		long eTime = System.currentTimeMillis();
 		Server s = getServer();
 	
+		//AAC Stuff
+		s.getPluginManager().registerEvents(this, this);
+		
 		//Fancy message
 		s.getPluginManager().getPlugin("Skript").getLogger().info("LargeSk, welcome to the server!");
 		
@@ -94,6 +102,53 @@ public class LargeSk extends JavaPlugin {
 			Skript.registerEffect(EffReloadPermissionCache.class, "aac reload permission(s|[s] cache)","reload permission(s|[s] cache) of aac","reload aac's permission(s|[s] cache)");
 			Skript.registerEffect(EffEnableCheck.class, "enable ([hack[ ]]check %-hacktype%|%-hacktype% [hack[ ]]check)");
 			Skript.registerEffect(EffDisableCheck.class, "disable ([hack[ ]]check %-hacktype%|%-hacktype% [hack[ ]]check)");
+			
+			//AAC Player Violation Event
+			Skript.registerEvent("Player Violation", SimpleEvent.class,
+			EvtPlayerViolation.class, new String[] { "violation","hack","cheat" });
+			
+			//EvtPlayerViolation getPlayer()
+			EventValues.registerEventValue(EvtPlayerViolation.class,
+			Player.class, new Getter<Player, EvtPlayerViolation>() {
+				@Override
+				public Player get(
+						EvtPlayerViolation evtPlayerViolation) {
+					return evtPlayerViolation.getPlayer();
+				}
+			}, 0);
+			
+			//EvtPlayerViolation getHack()
+			EventValues.registerEventValue(EvtPlayerViolation.class,
+			HackType.class, new Getter<HackType, EvtPlayerViolation>() {
+				@Override
+				public HackType get(
+						EvtPlayerViolation evtPlayerViolation) {
+					return evtPlayerViolation.getHack();
+				}
+			}, 0);
+			
+			//EvtPlayerViolation getMessage()
+			EventValues.registerEventValue(EvtPlayerViolation.class,
+			String.class, new Getter<String, EvtPlayerViolation>() {
+				@Override
+				public String get(
+						EvtPlayerViolation evtPlayerViolation) {
+					return evtPlayerViolation.getMessage();
+				}
+				
+			//EvtPlayerViolation getViolations()
+			}, 0);
+			EventValues.registerEventValue(EvtPlayerViolation.class,
+			Integer.class, new Getter<Integer, EvtPlayerViolation>() {
+				@Override
+				public Integer get(
+						EvtPlayerViolation evtPlayerViolation) {
+					return evtPlayerViolation.getViolations();
+				}
+			}, 0);	
+			
+			
+			
 		}
 		
 		//SkinsRestorer
@@ -138,7 +193,7 @@ public class LargeSk extends JavaPlugin {
 		{
 			getLogger().info("Checking for updates is disabled in config.");
 		}
-				
+		
 	}
 	
 	//On disable
@@ -167,7 +222,7 @@ public class LargeSk extends JavaPlugin {
 			e.printStackTrace();
 		}
 	}
-	
+        
 	//Checking updates, run on server startup and later by Bukkit scheduler
 	public void checkUpdates()
 	{

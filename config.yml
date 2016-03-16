@@ -13,7 +13,7 @@ updates:
   check: true
   
   #How often would you like to check for updates? (in minutes)
-  frequency: 180
+  frequency: 90
 
   #Would you like to send titlebar messages to players with
   #Permission largesk.notify when an update is detected?

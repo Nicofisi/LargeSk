@@ -1,4 +1,4 @@
-package pl.pickaxe.largesk.GeneralEffects;
+package pl.pickaxe.largesk.effects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;

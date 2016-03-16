@@ -1,4 +1,4 @@
-package pl.pickaxe.largesk.SkinsRestorer;
+package pl.pickaxe.largesk.skinsrestorer;
 
 import javax.annotation.Nullable;
 

@@ -1,4 +1,4 @@
-package pl.pickaxe.largesk.GeneralExpressions;
+package pl.pickaxe.largesk.expressions;
 
 import org.bukkit.World;
 import org.bukkit.event.Event;
