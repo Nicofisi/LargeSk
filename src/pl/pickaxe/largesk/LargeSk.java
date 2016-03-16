@@ -108,18 +108,20 @@ public class LargeSk extends JavaPlugin {
 			}
 			catch (IOException e)
 			{
-				getLogger().warning("Enabling Metrics failed!");
+				getLogger().warning("Enabling Metrics failed ¯\\_(ツ)_/¯");
+				e.printStackTrace();
 			}
 		}
 		else
 		{
-			getLogger().info("Metrics are disabled, so sorry to hear that :(");
+			getLogger().info("Metrics are disabled, sorry to hear that but it's not my problem ¯\\_(ツ)_/¯");
 		}
 		
 		//Update check schedule
-		if (config.getBoolean("updates.check"))
+		if (getConfig().getConfigurationSection("updates").getBoolean("check"))
 		{
-			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this::checkUpdates, 1L, 864000L);
+			getLogger().info("Checking for updates..");
+			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this::checkUpdates, 1L, getConfig().getConfigurationSection("updates").getInt("frequency")*1200L);
 		}
 		else
 		{
@@ -128,7 +130,8 @@ public class LargeSk extends JavaPlugin {
 		
 		//Announcing how much time enabling took
 		eTime = System.currentTimeMillis() - eTime;
-		getLogger().info("Enabling completed, took " + eTime + "ms.");
+		getLogger().info("Enabling LargeSk " + this.getDescription().getVersion() + " by Nicofisi completed, took " + eTime + "ms.");
+		getLogger().info("Share your problems and ideas on https://github.com/Nicofisi/LargeSk/issues");
 	}
 	
 	//On disable
