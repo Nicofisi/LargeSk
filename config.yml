@@ -1,0 +1,31 @@
+#You are now looking at the config file of LargeSk - an addon for Skript
+
+### Metrics ###
+
+#Decide if you want to enable Metrics, leave it true if you
+#Are a good person :)
+enableMetrics: true
+
+### Updates ###
+
+updates:
+  #Set to false if you want to disable this feature completely
+  check: true
+  
+  #How often would you like to check for updates? (in minutes)
+  frequency: 180
+
+  #Would you like to send titlebar messages to players with
+  #Permission largesk.notify when an update is detected?
+  notify: true
+  
+  #Would you like to enable command for downloading an update?
+  #It's not inplemented yet.
+  #There is no reason for you to disable it :P
+  command: true
+ 
+ 
+### Other ### 
+ 
+#This is something you REALLY shouldn't touch
+configVersion: 1
