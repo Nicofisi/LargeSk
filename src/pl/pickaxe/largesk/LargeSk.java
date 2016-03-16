@@ -49,6 +49,9 @@ public class LargeSk extends JavaPlugin {
 		long eTime = System.currentTimeMillis();
 		Server s = getServer();
 	
+		//Fancy message
+		s.getPluginManager().getPlugin("Skript").getLogger().info("LargeSk, welcome to the server!");
+		
 		//Configs
 		configf = new File(getDataFolder(), "config.yml");
 		if ( ! configf.exists())
@@ -117,6 +120,14 @@ public class LargeSk extends JavaPlugin {
 			getLogger().info("Metrics are disabled, sorry to hear that but it's not my problem ¯\\_(ツ)_/¯");
 		}
 		
+		//Register the command
+		this.getCommand("largesk").setExecutor(new LargeSkCommand());
+		
+		//Announcing how much time enabling took
+		eTime = System.currentTimeMillis() - eTime;
+		getLogger().info("Enabling LargeSk " + this.getDescription().getVersion() + " by Nicofisi completed, took " + eTime + "ms.");
+		getLogger().info("Share your problems and ideas on https://github.com/Nicofisi/LargeSk/issues");
+		
 		//Update check schedule
 		if (getConfig().getConfigurationSection("updates").getBoolean("check"))
 		{
@@ -127,11 +138,7 @@ public class LargeSk extends JavaPlugin {
 		{
 			getLogger().info("Checking for updates is disabled in config.");
 		}
-		
-		//Announcing how much time enabling took
-		eTime = System.currentTimeMillis() - eTime;
-		getLogger().info("Enabling LargeSk " + this.getDescription().getVersion() + " by Nicofisi completed, took " + eTime + "ms.");
-		getLogger().info("Share your problems and ideas on https://github.com/Nicofisi/LargeSk/issues");
+				
 	}
 	
 	//On disable
@@ -139,6 +146,7 @@ public class LargeSk extends JavaPlugin {
 	public void onDisable() {
 		getLogger().info("Bye, Senpai!");
 	}
+	
 	//Some stuff to copy the default config file from the plugin jar file.
 	public void copy(InputStream in, File file) {
 		try {
@@ -183,7 +191,7 @@ public class LargeSk extends JavaPlugin {
 	        }
 	        else
 	        {
-	            getLogger().info("It seems like your using the latest version!");
+	            getLogger().info("It seems like your using the latest version of the plugin.");
 	        }
 	}
 }
