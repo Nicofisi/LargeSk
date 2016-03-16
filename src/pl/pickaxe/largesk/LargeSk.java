@@ -1,6 +1,6 @@
 package pl.pickaxe.largesk;
 
-import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,6 +28,9 @@ public class LargeSk extends JavaPlugin {
 	@Override
 	
 	public void onEnable() {
+		long eTime = System.currentTimeMillis();
+		Server s = getServer();
+		
 		Skript.registerAddon(this);
 		
 		//Different Stuff
@@ -62,14 +65,17 @@ public class LargeSk extends JavaPlugin {
 		}
 		
 		//SkinsRestorer
-		if (getServer().getPluginManager().isPluginEnabled("SkinsRestorer")) {
+		if (s.getPluginManager().isPluginEnabled("SkinsRestorer")) {
 			getLogger().info("SkinsRestorer has been detected! Registring grammar..");
 			Skript.registerExpression(ExprSkinOfPlayer.class, String.class, ExpressionType.PROPERTY, "skin of %player%","%player%'s skin");
 		}
+		
+		eTime = System.currentTimeMillis() - eTime;
+		getLogger().info("Enabling completed, took " + eTime + "ms.");
 	}
 	@Override
 	public void onDisable() {
-		Bukkit.getServer().getLogger().info("Bye, Senpai!");
+		getLogger().info("Bye, Senpai!");
 	}
 	
 
