@@ -1,11 +1,16 @@
 package pl.pickaxe.largesk;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.URL;
+import java.util.Objects;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
@@ -43,7 +48,7 @@ public class LargeSk extends JavaPlugin {
 		//Enabling timer
 		long eTime = System.currentTimeMillis();
 		Server s = getServer();
-		
+	
 		//Configs
 		configf = new File(getDataFolder(), "config.yml");
 		if ( ! configf.exists())
@@ -69,7 +74,6 @@ public class LargeSk extends JavaPlugin {
 		
 		//General Expressions
 		Skript.registerExpression(ExprFullTime.class, Long.class, ExpressionType.PROPERTY, "(full|total)[ ]time of %world%","%world%'s (full|total)[ ]time");
-		//Skript.registerExpression(ExprCakeSlicesEaten.class, Integer.class, ExpressionType.PROPERTY, "[the] [(amount|number) of] (slices eaten|eaten slices) of %block%");
 		
 		//General Effects
 		Skript.registerEffect(EffDisableAllPlugins.class, "disable all plugins","disable every plugin");
@@ -112,6 +116,16 @@ public class LargeSk extends JavaPlugin {
 			getLogger().info("Metrics are disabled, so sorry to hear that :(");
 		}
 		
+		//Update check schedule
+		if (config.getBoolean("updates.check"))
+		{
+			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this::checkUpdates, 1L, 864000L);
+		}
+		else
+		{
+			getLogger().info("Checking for updates is disabled in config.");
+		}
+		
 		//Announcing how much time enabling took
 		eTime = System.currentTimeMillis() - eTime;
 		getLogger().info("Enabling completed, took " + eTime + "ms.");
@@ -141,5 +155,32 @@ public class LargeSk extends JavaPlugin {
 			getLogger().severe("Report it on https://github.com/Nicofisi/LargeSk/issues please.");
 			e.printStackTrace();
 		}
+	}
+	
+	//Checking updates, run on server startup and later by Bukkit scheduler
+	public void checkUpdates()
+	{
+	        String v = "";
+	        try
+	        {
+	            BufferedReader in = new BufferedReader(new InputStreamReader(new URL("https://raw.githubusercontent.com/Nicofisi/LargeSk/master/lastest.version").openStream()));
+	            v = in.readLine();
+	            in.close();
+	        }
+	        catch (Exception e)
+	        {
+	            getLogger().severe(e.getCause().getMessage());
+	        }
+	        String version = this.getDescription().getVersion();
+	        if ( ! Objects.equals(version, v))
+	        {
+	        	getLogger().info("LargeSk " + v + " was released! You are using " + version + ".");
+	        	getLogger().info("Download update from https://github.com/Nicofisi/LargeSk/releases");
+	        	
+	        }
+	        else
+	        {
+	            getLogger().info("It seems like your using the latest version!");
+	        }
 	}
 }
