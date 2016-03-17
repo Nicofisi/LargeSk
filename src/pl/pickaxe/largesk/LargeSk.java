@@ -36,6 +36,7 @@ import pl.pickaxe.largesk.aac.ExprAacTps;
 import pl.pickaxe.largesk.aac.ExprViolationLevel;
 import pl.pickaxe.largesk.effects.EffDisableAllPlugins;
 import pl.pickaxe.largesk.events.EvtPlayerViolation;
+import pl.pickaxe.largesk.events.PlayerViolationEvt;
 import pl.pickaxe.largesk.expressions.ExprFullTime;
 import pl.pickaxe.largesk.skinsrestorer.ExprSkinOfPlayer;
 import pl.pickaxe.largesk.util.EnumClassInfo;
@@ -43,19 +44,16 @@ import pl.pickaxe.largesk.util.Metrics;
 
 public class LargeSk extends JavaPlugin implements Listener {
 	
+	
 	public static File configf;
     public static FileConfiguration config;
 	
 	@Override
-	
 	public void onEnable() {
 		
 		//Enabling timer
 		long eTime = System.currentTimeMillis();
 		Server s = getServer();
-	
-		//AAC Stuff
-		s.getPluginManager().registerEvents(this, this);
 		
 		//Fancy message
 		s.getPluginManager().getPlugin("Skript").getLogger().info("LargeSk, welcome to the server!");
@@ -75,7 +73,7 @@ public class LargeSk extends JavaPlugin implements Listener {
 		Skript.registerAddon(this);
 		
 		//Registring hacktype enum from AAC
-		EnumClassInfo.create(HackType.class, "hacktype").register();
+		EnumClassInfo.create(HackType.class, "hack").register();
 		
 		//Learning
 		Skript.registerExpression(ExprNameOfPlayer.class, String.class, ExpressionType.PROPERTY, "the name of the wonderful player %player%", "%player%'s wonderful name");
@@ -103,7 +101,10 @@ public class LargeSk extends JavaPlugin implements Listener {
 			Skript.registerEffect(EffEnableCheck.class, "enable ([hack[ ]]check %-hacktype%|%-hacktype% [hack[ ]]check)");
 			Skript.registerEffect(EffDisableCheck.class, "disable ([hack[ ]]check %-hacktype%|%-hacktype% [hack[ ]]check)");
 			
-			//AAC Player Violation Event
+			//Register Events
+			s.getPluginManager().registerEvents(new PlayerViolationEvt(), this);
+			
+			//Register EvtPlayerViolation to Skript
 			Skript.registerEvent("Player Violation", SimpleEvent.class,
 			EvtPlayerViolation.class, new String[] { "violation","hack","cheat" });
 			
@@ -112,8 +113,8 @@ public class LargeSk extends JavaPlugin implements Listener {
 			Player.class, new Getter<Player, EvtPlayerViolation>() {
 				@Override
 				public Player get(
-						EvtPlayerViolation evtPlayerViolation) {
-					return evtPlayerViolation.getPlayer();
+						EvtPlayerViolation event) {
+					return event.getPlayer();
 				}
 			}, 0);
 			
@@ -122,8 +123,8 @@ public class LargeSk extends JavaPlugin implements Listener {
 			HackType.class, new Getter<HackType, EvtPlayerViolation>() {
 				@Override
 				public HackType get(
-						EvtPlayerViolation evtPlayerViolation) {
-					return evtPlayerViolation.getHack();
+						EvtPlayerViolation event) {
+					return event.getHack();
 				}
 			}, 0);
 			
@@ -132,8 +133,8 @@ public class LargeSk extends JavaPlugin implements Listener {
 			String.class, new Getter<String, EvtPlayerViolation>() {
 				@Override
 				public String get(
-						EvtPlayerViolation evtPlayerViolation) {
-					return evtPlayerViolation.getMessage();
+						EvtPlayerViolation event) {
+					return event.getMessage();
 				}
 				
 			//EvtPlayerViolation getViolations()
@@ -142,15 +143,11 @@ public class LargeSk extends JavaPlugin implements Listener {
 			Integer.class, new Getter<Integer, EvtPlayerViolation>() {
 				@Override
 				public Integer get(
-						EvtPlayerViolation evtPlayerViolation) {
-					return evtPlayerViolation.getViolations();
+						EvtPlayerViolation event) {
+					return event.getViolations();
 				}
 			}, 0);	
-			
-			
-			
 		}
-		
 		//SkinsRestorer
 		if (s.getPluginManager().isPluginEnabled("SkinsRestorer")) {
 			getLogger().info("SkinsRestorer has been detected! Registring grammar..");
@@ -193,13 +190,24 @@ public class LargeSk extends JavaPlugin implements Listener {
 		{
 			getLogger().info("Checking for updates is disabled in config.");
 		}
-		
 	}
 	
 	//On disable
 	@Override
 	public void onDisable() {
 		getLogger().info("Bye, Senpai!");
+		if (getConfig().getBoolean("enableMetrics"))
+		{
+			try {
+				Metrics metrics = new Metrics(this);
+				metrics.enable();
+			}
+			catch (IOException e)
+			{
+				getLogger().warning("Disabling Metrics failed ¯\\_(ツ)_/¯");
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	//Some stuff to copy the default config file from the plugin jar file.

@@ -10,6 +10,7 @@ import me.konsolas.aac.api.PlayerViolationEvent;
 
 public class PlayerViolationEvt implements Listener
 {
+	
 	@EventHandler
 	public void onPlayerViolation(PlayerViolationEvent e)
 	{
@@ -17,7 +18,6 @@ public class PlayerViolationEvt implements Listener
 		HackType hack = e.getHackType();
 		String message = e.getMessage();
 		Integer violations = e.getViolations();
-		
 		Bukkit.getServer().getPluginManager().callEvent(new EvtPlayerViolation(player, hack, message, violations));
 	}
 }
