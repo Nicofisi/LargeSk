@@ -1,6 +1,6 @@
 main: pl.pickaxe.largesk.LargeSk
 name: LargeSk
-version: 0.9
+version: 0.9.1
 description: An addon for Skript with some cool features.
 author: Nicofisi
 website: http://github.com/Nicofisi/LargeSk
@@ -12,3 +12,25 @@ commands:
     description: Main command of LargeSk
     usage: /lsk
     aliases: lsk
+    
+permissions:
+  largesk.command.help:
+    default: false
+  largesk.command.info:
+    default: false
+  largesk.command.check:
+    default: false
+  largesk.command.update:
+    default: false
+  largesk.command.debug:
+    default: false
+  largesk.command.*:
+    children:
+      largesk.command.help: false
+      largesk.command.info: false
+      largesk.command.check: false
+      largesk.command.update: false
+      largesk.command.debug: false
+  largesk.*:
+    children:
+      largesk.command.*: false

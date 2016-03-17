@@ -9,7 +9,8 @@ enableMetrics: true
 ### Updates ###
 
 updates:
-  #Set to false if you want to disable this feature completely
+  #Set to false if you want to disable all the features below completely
+  #It will still check for updates ONCE while enabling the plugin
   check: true
   
   #How often would you like to check for updates? (in minutes)
@@ -27,5 +28,5 @@ updates:
  
 ### Other ### 
  
-#This is something you REALLY shouldn't touch
-configVersion: 1
+#This is something you shouldn't touch, or else this file will be cleared.
+configVersion: 2

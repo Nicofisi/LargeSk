@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.Objects;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -18,12 +19,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.konsolas.aac.api.HackType;
+
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.util.SimpleEvent;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
-import me.konsolas.aac.api.HackType;
+import pl.pickaxe.largesk.util.Xlog;
 import pl.pickaxe.largesk.aac.CondCheckEnabled;
 import pl.pickaxe.largesk.aac.CondIsBypassed;
 import pl.pickaxe.largesk.aac.CondOnGround;
@@ -54,18 +57,33 @@ public class LargeSk extends JavaPlugin implements Listener {
 		//Enabling timer
 		long eTime = System.currentTimeMillis();
 		Server s = getServer();
-		
-		//Fancy message
-		s.getPluginManager().getPlugin("Skript").getLogger().info("LargeSk, welcome to the server!");
+		Xlog.logInfo(ChatColor.YELLOW  + "=== ENABLE " + ChatColor.GREEN + "START" + ChatColor.YELLOW + " ===");
 		
 		//Configs
 		configf = new File(getDataFolder(), "config.yml");
-		if ( ! configf.exists())
+		
+		//Defines the lastest config version
+		int lastestConfigVersion = 2;
+		
+		if ( ! configf.exists() || lastestConfigVersion != getConfig().getInt("configVersion"))
 		{
-			getLogger().info("The config.yml file does not exist or is outdated.");
-			getLogger().info("I'll copy it from the plugin's jar file now.");
+			Xlog.logWarning("The config.yml file does not exist or is outdated.");
+			Xlog.logInfo("I'll copy it from the plugin's jar file now.");
 			configf.getParentFile().mkdirs();
+			if (configf.exists()) {
+				File oldConfig = new File("config-old-" + System.currentTimeMillis());
+				configf.renameTo(oldConfig);
+			}
 			copy(getResource("config.yml"), configf);
+			reloadConfig();
+			Xlog.logInfo("Done.");
+			Xlog.logInfo("You are now using DEFAULT configuration of the plugin.");
+			if ( ! configf.exists() || lastestConfigVersion != getConfig().getInt("configVersion"))
+			{
+				getLogger().info(getConfig().getInt("configVersion") + lastestConfigVersion + "");
+				Xlog.logError("Whooops! The default config file is broken. It's not compatybile with the current version of the plugin.");
+				Xlog.logError("All you may do is to contact the developer or use older version of the plugin.");
+			}
 		}
 		
 		
@@ -73,7 +91,7 @@ public class LargeSk extends JavaPlugin implements Listener {
 		Skript.registerAddon(this);
 		
 		//Registring hacktype enum from AAC
-		EnumClassInfo.create(HackType.class, "hack").register();
+		EnumClassInfo.create(HackType.class, "hacktype").register();
 		
 		//Learning
 		Skript.registerExpression(ExprNameOfPlayer.class, String.class, ExpressionType.PROPERTY, "the name of the wonderful player %player%", "%player%'s wonderful name");
@@ -88,8 +106,9 @@ public class LargeSk extends JavaPlugin implements Listener {
 		Skript.registerEffect(EffDisableAllPlugins.class, "disable all plugins","disable every plugin");
 		
 		//AAC
-		if (getServer().getPluginManager().isPluginEnabled("AAC")) {
-			getLogger().info("You've got AAC, wow. You are soooo rich! I'll collaborate!");
+		if (getServer().getPluginManager().isPluginEnabled("AAC"))
+		{
+			Xlog.logInfo("You've got AAC, wow. You are soooo rich! I'll collaborate!");
 			Skript.registerCondition(CondIsBypassed.class, "[aac] %player%('s| is) bypass(ed|ing) aac");
 			Skript.registerCondition(CondOnGround.class, "[aac] %player%('s| is) (on ground|not in air)");
 			Skript.registerCondition(CondCheckEnabled.class, "[aac ](check %-hacktype%|%-hacktype% check) is (enabled|on|running)");
@@ -149,27 +168,29 @@ public class LargeSk extends JavaPlugin implements Listener {
 			}, 0);	
 		}
 		//SkinsRestorer
-		if (s.getPluginManager().isPluginEnabled("SkinsRestorer")) {
-			getLogger().info("SkinsRestorer has been detected! Registring grammar..");
+		if (s.getPluginManager().isPluginEnabled("SkinsRestorer"))
+		{
+			Xlog.logInfo("SkinsRestorer has been detected! Registring grammar..");
 			Skript.registerExpression(ExprSkinOfPlayer.class, String.class, ExpressionType.PROPERTY, "skin of %player%","%player%'s skin");
 		}
 		
 		//Metrics
 		if (getConfig().getBoolean("enableMetrics"))
 		{
-			try {
+			try
+			{
 				Metrics metrics = new Metrics(this);
 				metrics.start();
 			}
 			catch (IOException e)
 			{
-				getLogger().warning("Enabling Metrics failed ¯\\_(ツ)_/¯");
+				Xlog.logWarning("Enabling Metrics failed ¯\\_(ツ)_/¯");
 				e.printStackTrace();
 			}
 		}
 		else
 		{
-			getLogger().info("Metrics are disabled, sorry to hear that but it's not my problem ¯\\_(ツ)_/¯");
+			Xlog.logInfo("Metrics are disabled, sorry to hear that but it's not my problem ¯\\_(ツ)_/¯");
 		}
 		
 		//Register the command
@@ -177,25 +198,26 @@ public class LargeSk extends JavaPlugin implements Listener {
 		
 		//Announcing how much time enabling took
 		eTime = System.currentTimeMillis() - eTime;
-		getLogger().info("Enabling LargeSk " + this.getDescription().getVersion() + " by Nicofisi completed, took " + eTime + "ms.");
-		getLogger().info("Share your problems and ideas on https://github.com/Nicofisi/LargeSk/issues");
+		Xlog.logInfo(ChatColor.YELLOW  + "=== ENABLE " + ChatColor.GREEN + "COMPLETE" + ChatColor.YELLOW + " (Took " + ChatColor.LIGHT_PURPLE + eTime + "ms" + ChatColor.YELLOW + ") ===");
+		Xlog.logInfo("Share your problems and ideas on https://github.com/Nicofisi/LargeSk/issues");
 		
 		//Update check schedule
 		if (getConfig().getConfigurationSection("updates").getBoolean("check"))
 		{
-			getLogger().info("Checking for updates..");
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this::checkUpdates, 1L, getConfig().getConfigurationSection("updates").getInt("frequency")*1200L);
 		}
 		else
 		{
-			getLogger().info("Checking for updates is disabled in config.");
+			Xlog.logInfo("Checking for updates is disabled in config, so I'll check it only once,");
+			Xlog.logInfo("And I won't disturb you anymore, okay?");
+			this.checkUpdates();
 		}
 	}
 	
 	//On disable
 	@Override
 	public void onDisable() {
-		getLogger().info("Bye, Senpai!");
+		Xlog.logInfo("Bye, Senpai!");
 		if (getConfig().getBoolean("enableMetrics"))
 		{
 			try {
@@ -204,7 +226,7 @@ public class LargeSk extends JavaPlugin implements Listener {
 			}
 			catch (IOException e)
 			{
-				getLogger().warning("Disabling Metrics failed ¯\\_(ツ)_/¯");
+				Xlog.logWarning("Disabling Metrics failed ¯\\_(ツ)_/¯");
 				e.printStackTrace();
 			}
 		}
@@ -225,36 +247,37 @@ public class LargeSk extends JavaPlugin implements Listener {
 		catch (Exception e)
 		{
 			//It shouldn't happen
-			getLogger().severe("Mate, I really tried to copy the default config, but I could not.");
-			getLogger().severe("Report it on https://github.com/Nicofisi/LargeSk/issues please.");
+			Xlog.logError("Mate, I really tried to copy the default config, but I could not.");
+			Xlog.logError("Report it on https://github.com/Nicofisi/LargeSk/issues please.");
 			e.printStackTrace();
 		}
 	}
         
-	//Checking updates, run on server startup and later by Bukkit scheduler
+	//Checking updates, run on server startup and later by the Bukkit scheduler
 	public void checkUpdates()
 	{
-	        String v = "";
-	        try
-	        {
-	            BufferedReader in = new BufferedReader(new InputStreamReader(new URL("https://raw.githubusercontent.com/Nicofisi/LargeSk/master/lastest.version").openStream()));
-	            v = in.readLine();
-	            in.close();
-	        }
-	        catch (Exception e)
-	        {
-	            getLogger().severe(e.getCause().getMessage());
-	        }
-	        String version = this.getDescription().getVersion();
-	        if ( ! Objects.equals(version, v))
-	        {
-	        	getLogger().info("LargeSk " + v + " was released! You are using " + version + ".");
-	        	getLogger().info("Download update from https://github.com/Nicofisi/LargeSk/releases");
-	        	
-	        }
-	        else
-	        {
-	            getLogger().info("It seems like your using the latest version of the plugin.");
-	        }
+		Xlog.logUpdater("Checking for updates..");
+	    String newVersion = "";
+	    try
+	    {
+	        BufferedReader in = new BufferedReader(new InputStreamReader(new URL("https://raw.githubusercontent.com/Nicofisi/LargeSk/master/lastest.version").openStream()));
+	        newVersion = in.readLine();
+	        in.close();
+	    }
+	    catch (Exception e)
+	    {
+	        Xlog.logError(e.getCause().getMessage());
+	    }
+	    String currentVersion = this.getDescription().getVersion();
+	    if ( ! Objects.equals(currentVersion, newVersion))
+	    {
+	    	Xlog.logUpdater("LargeSk " + newVersion + " was released! You are using " + currentVersion + ".");
+	    	Xlog.logUpdater("Download the update from https://github.com/Nicofisi/LargeSk/releases");
+	       	
+	    }
+	    else
+	    {
+	    	Xlog.logUpdater("It seems like your using the latest version of the plugin.");
+	    }
 	}
 }
