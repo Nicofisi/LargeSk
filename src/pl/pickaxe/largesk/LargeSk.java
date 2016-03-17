@@ -200,7 +200,7 @@ public class LargeSk extends JavaPlugin implements Listener {
 		{
 			try {
 				Metrics metrics = new Metrics(this);
-				metrics.enable();
+				metrics.disable();
 			}
 			catch (IOException e)
 			{
