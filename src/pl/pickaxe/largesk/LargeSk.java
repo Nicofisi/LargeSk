@@ -16,7 +16,6 @@ import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerLevelChangeEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.konsolas.aac.api.HackType;
@@ -38,12 +37,14 @@ import pl.pickaxe.largesk.aac.ExprAacPing;
 import pl.pickaxe.largesk.aac.ExprAacTps;
 import pl.pickaxe.largesk.aac.ExprViolationLevel;
 import pl.pickaxe.largesk.effects.EffDisableAllPlugins;
+import pl.pickaxe.largesk.effects.EffLagServer;
 import pl.pickaxe.largesk.events.EvtPlayerViolation;
 import pl.pickaxe.largesk.events.PlayerViolationEvt;
 import pl.pickaxe.largesk.expressions.ExprFullTime;
 import pl.pickaxe.largesk.skinsrestorer.ExprSkinOfPlayer;
 import pl.pickaxe.largesk.util.EnumClassInfo;
 import pl.pickaxe.largesk.util.Metrics;
+import pl.pickaxe.largesk.util.SkAddons;
 
 public class LargeSk extends JavaPlugin implements Listener {
 	
@@ -63,7 +64,7 @@ public class LargeSk extends JavaPlugin implements Listener {
 		configf = new File(getDataFolder(), "config.yml");
 		
 		//Defines the lastest config version
-		int lastestConfigVersion = 2;
+		int lastestConfigVersion = 3;
 		
 		if ( ! configf.exists() || lastestConfigVersion != getConfig().getInt("configVersion"))
 		{
@@ -86,29 +87,24 @@ public class LargeSk extends JavaPlugin implements Listener {
 			}
 		}
 		
-		
 		//Registring Skript addon
 		Skript.registerAddon(this);
-		
-		//Registring hacktype enum from AAC
-		EnumClassInfo.create(HackType.class, "hacktype").register();
-		
-		//Learning
-		Skript.registerExpression(ExprNameOfPlayer.class, String.class, ExpressionType.PROPERTY, "the name of the wonderful player %player%", "%player%'s wonderful name");
-		Skript.registerExpression(ExprDisplayNameOfPlayer.class, String.class, ExpressionType.PROPERTY, "great display name of player %player%", "%player%'s amazing display name");
-		Skript.registerEffect(EffSendMessage.class, "send great message %string% to %player%");
-		Skript.registerEvent("Amazing Player Level Change", SimpleEvent.class, PlayerLevelChangeEvent.class, "amazing player level change");
-		
+				
 		//General Expressions
 		Skript.registerExpression(ExprFullTime.class, Long.class, ExpressionType.PROPERTY, "(full|total)[ ]time of %world%","%world%'s (full|total)[ ]time");
+		if (getConfig().getConfigurationSection("enable").getBoolean("lag"))
+		{
+			Skript.registerEffect(EffLagServer.class, "lag [the] server for %timespan%","(make|create) a %timespan% lag[[ ]spike]");
+		}
 		
 		//General Effects
 		Skript.registerEffect(EffDisableAllPlugins.class, "disable all plugins","disable every plugin");
 		
 		//AAC
-		if (getServer().getPluginManager().isPluginEnabled("AAC"))
+		if (getServer().getPluginManager().isPluginEnabled("AAC") && getConfig().getConfigurationSection("enable").getBoolean("AAC"))
 		{
-			Xlog.logInfo("You've got AAC, wow. You are soooo rich! I'll collaborate!");
+			Xlog.logInfo("I have found AAC on your server. I'm pleased to announce we will work together from now.");
+			EnumClassInfo.create(HackType.class, "hacktype").register();
 			Skript.registerCondition(CondIsBypassed.class, "[aac] %player%('s| is) bypass(ed|ing) aac");
 			Skript.registerCondition(CondOnGround.class, "[aac] %player%('s| is) (on ground|not in air)");
 			Skript.registerCondition(CondCheckEnabled.class, "[aac ](check %-hacktype%|%-hacktype% check) is (enabled|on|running)");
@@ -170,7 +166,7 @@ public class LargeSk extends JavaPlugin implements Listener {
 		//SkinsRestorer
 		if (s.getPluginManager().isPluginEnabled("SkinsRestorer"))
 		{
-			Xlog.logInfo("SkinsRestorer has been detected! Registring grammar..");
+			Xlog.logInfo("SkinsRestorer has been detected! Registring conditions, expressions and other boring stuff..");
 			Skript.registerExpression(ExprSkinOfPlayer.class, String.class, ExpressionType.PROPERTY, "skin of %player%","%player%'s skin");
 		}
 		
@@ -190,21 +186,21 @@ public class LargeSk extends JavaPlugin implements Listener {
 		}
 		else
 		{
-			Xlog.logInfo("Metrics are disabled, sorry to hear that but it's not my problem ¯\\_(ツ)_/¯");
+			Xlog.logInfo("You have disabled Metrics, sorry to hear that but it's not my problem ¯\\_(ツ)_/¯");
 		}
 		
 		//Register the command
 		this.getCommand("largesk").setExecutor(new LargeSkCommand());
 		
 		//Announcing how much time enabling took
+		Xlog.logInfo("Share your problems and ideas on https://github.com/Nicofisi/LargeSk/issues");
 		eTime = System.currentTimeMillis() - eTime;
 		Xlog.logInfo(ChatColor.YELLOW  + "=== ENABLE " + ChatColor.GREEN + "COMPLETE" + ChatColor.YELLOW + " (Took " + ChatColor.LIGHT_PURPLE + eTime + "ms" + ChatColor.YELLOW + ") ===");
-		Xlog.logInfo("Share your problems and ideas on https://github.com/Nicofisi/LargeSk/issues");
 		
 		//Update check schedule
 		if (getConfig().getConfigurationSection("updates").getBoolean("check"))
 		{
-			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this::checkUpdates, 1L, getConfig().getConfigurationSection("updates").getInt("frequency")*1200L);
+			Bukkit.getScheduler().runTaskTimerAsynchronously(this, this::checkUpdates, 1L, getConfig().getConfigurationSection("updates").getInt("frequency")*1200L);
 		}
 		else
 		{
@@ -212,6 +208,8 @@ public class LargeSk extends JavaPlugin implements Listener {
 			Xlog.logInfo("And I won't disturb you anymore, okay?");
 			this.checkUpdates();
 		}
+		Bukkit.getScheduler().runTaskLaterAsynchronously(this, SkAddons::logAddons, 600);
+		Xlog.logInfo("I will show you a list of your Skript addons in 30 seconds.");
 	}
 	
 	//On disable

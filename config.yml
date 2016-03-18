@@ -1,32 +1,41 @@
-#You are now looking at the config file of LargeSk - an addon for Skript
+# You are now looking at the config file of LargeSk - an addon for Skript
 
 ### Metrics ###
 
-#Decide if you want to enable Metrics, leave it true if you
-#Are a good person :)
+# Decide if you want to enable Metrics, leave it true if you
+# Are a good person :)
 enableMetrics: true
 
 ### Updates ###
 
 updates:
-  #Set to false if you want to disable all the features below completely
-  #It will still check for updates ONCE while enabling the plugin
+  # Set to false if you want to disable all the features below completely
+  # It will still check for updates ONCE while enabling the plugin
   check: true
   
-  #How often would you like to check for updates? (in minutes)
+  # How often would you like to check for updates? (in minutes)
   frequency: 90
 
-  #Would you like to send titlebar messages to players with
-  #Permission largesk.notify when an update is detected?
+  # Would you like to send titlebar messages to players with
+  # Permission largesk.notify when an update is detected?
   notify: true
   
-  #Would you like to enable command for downloading an update?
-  #It's not inplemented yet.
-  #There is no reason for you to disable it :P
+  # Would you like to enable command for downloading an update?
+  # It's not inplemented yet.
+  # There is no reason for you to disable it :P
   command: true
  
+### Toggles ###
+# Here you can disable registering some expressions, conditions, effects and events
+# If you don't have required plugin, they also won't load,
+# There is no need for you to modify it unless you are having problems
+# Or security issues
+enable:
+  AAC: true
+  SkinsRestorer: true
+  Lag: true
  
 ### Other ### 
  
-#This is something you shouldn't touch, or else this file will be cleared.
-configVersion: 2
+# This is something you shouldn't touch, or else this file will be cleared.
+configVersion: 3

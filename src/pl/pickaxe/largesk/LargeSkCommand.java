@@ -13,16 +13,20 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import ch.njol.skript.Skript;
+import ch.njol.skript.SkriptAddon;
+import pl.pickaxe.largesk.util.Xlog;
+
 public class LargeSkCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if ( sender instanceof Player && sender.hasPermission("largesk.command.help"))
+		if ( sender instanceof Player && sender.hasPermission("largesk.command.help") || ! (sender instanceof Player))
 		{
 			if ( ! (args.length == 0)) {
 				if ( sender instanceof Player && ! sender.hasPermission("largesk.command." + args[0]))
 				{
-					sender.sendMessage(ChatColor.GRAY + "You are missing the permission " + ChatColor.YELLOW + ChatColor.ITALIC + "largesk.command." + args[0] + ChatColor.GRAY + " .");
+					sender.sendMessage(ChatColor.GRAY + "You are lacking the permission " + ChatColor.YELLOW + ChatColor.ITALIC + "largesk.command." + args[0] + ChatColor.GRAY + " .");
 				}
 				if (args[0].equalsIgnoreCase("info"))
 				{
@@ -30,6 +34,7 @@ public class LargeSkCommand implements CommandExecutor {
 				}
 				else if (args[0].equalsIgnoreCase("check"))
 				{
+					sender.sendMessage("Checking..");
 				    String newVersion = "";
 				    try
 				    {
@@ -59,27 +64,30 @@ public class LargeSkCommand implements CommandExecutor {
 				}
 				else if (args[0].equalsIgnoreCase("debug"))
 				{
-					sender.sendMessage("========== START OF DEBUG MESSAGE ==========");
-					sender.sendMessage("========== PLUGINS ==========");
+					if (sender instanceof Player)
+					{
+						sender.sendMessage(ChatColor.GRAY + "The message has been sent to the console.");
+					}
+					Xlog.logInfo(ChatColor.YELLOW  + "=== DEBUG " + ChatColor.GREEN + "START" + ChatColor.YELLOW + " ===");
+					Xlog.logInfo(ChatColor.YELLOW  + "=== PLUGINS " + ChatColor.YELLOW + " ===");
 					for (Plugin plugin : Bukkit.getPluginManager().getPlugins())
 					{
-						sender.sendMessage("==========");
-						sender.sendMessage("Plugin: " + plugin.getName() + " | Version: " + plugin.getDescription().getVersion());
-						sender.sendMessage("Description: " + plugin.getDescription().getDescription());
-						sender.sendMessage("Website: " + plugin.getDescription().getWebsite());
-						sender.sendMessage("Data Folder: " + plugin.getDataFolder());
+						Xlog.logInfo(plugin.getName() + " " + plugin.getDescription().getVersion() + " >> " + plugin.getDescription().getAuthors());;
 					}
-					sender.sendMessage("========== SHORT PLUGINS ==========");
-					String pls = "";
-					for (Plugin plugin : Bukkit.getPluginManager().getPlugins())
+					Xlog.logInfo(ChatColor.YELLOW  + "=== SERVER INFO " + ChatColor.YELLOW + " ===");
+					Xlog.logInfo("Server version: " + Bukkit.getVersion());
+					Xlog.logInfo("Bukkit version: " + Bukkit.getBukkitVersion());
+					Xlog.logInfo(ChatColor.YELLOW  + "=== SKRIPT INFO " + ChatColor.YELLOW + " ===");
+					Xlog.logInfo("Skript version: " + Bukkit.getPluginManager().getPlugin("Skript").getDescription().getVersion());
+					Xlog.logInfo("Skript Addons: " + Skript.getAddons());
+					String addlist = "";
+					for (SkriptAddon addon : Skript.getAddons())
 					{
-						pls = pls + plugin.getName() + " " + plugin.getDescription().getVersion() + ", ";
+						addlist = addlist + addon.getName() + " " + Bukkit.getPluginManager().getPlugin(addon.toString()).getDescription().getVersion() + ", ";
+						addlist = addlist.substring(0, addlist.length() - 2);
 					}
-					sender.sendMessage(pls);
-					sender.sendMessage("========== SERVER ==========");
-					sender.sendMessage("Server version: " + Bukkit.getVersion());
-					sender.sendMessage("Bukkit version: " + Bukkit.getBukkitVersion());
-					sender.sendMessage("========== END OF DEBUG MESSAGE ==========");
+					Xlog.logInfo("With versions: " + addlist);
+					Xlog.logInfo(ChatColor.YELLOW  + "=== DEBUG " + ChatColor.GREEN + "END" + ChatColor.YELLOW + " ===");
 				}
 				else
 				{
@@ -97,7 +105,7 @@ public class LargeSkCommand implements CommandExecutor {
 		}
 		else
 		{
-			sender.sendMessage(ChatColor.GRAY + "You are missing the permission " + ChatColor.YELLOW + ChatColor.ITALIC + "largesk.command.help " + ChatColor.GRAY + ".");
+			sender.sendMessage(ChatColor.GRAY + "You are lacking the permission " + ChatColor.YELLOW + ChatColor.ITALIC + "largesk.command.help " + ChatColor.GRAY + ".");
 		}
 		return true;
 	}
