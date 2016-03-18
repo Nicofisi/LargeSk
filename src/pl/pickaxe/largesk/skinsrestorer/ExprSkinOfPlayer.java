@@ -2,7 +2,7 @@ package pl.pickaxe.largesk.skinsrestorer;
 
 import javax.annotation.Nullable;
 
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Event;
 
 import ch.njol.skript.classes.Changer;
@@ -19,7 +19,7 @@ public class ExprSkinOfPlayer extends SimpleExpression<String> {
 
 	//<skin of %player%| %player%'s skin>
 	
-	private Expression<Player> p;
+	private Expression<OfflinePlayer> p;
 	
 	@Override
 	public Class<? extends String> getReturnType() {
@@ -34,7 +34,7 @@ public class ExprSkinOfPlayer extends SimpleExpression<String> {
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean init(Expression<?>[] e, int arg1, Kleenean arg2, ParseResult arg3) {
-		p = (Expression<Player>) e[0];
+		p = (Expression<OfflinePlayer>) e[0];
 		return true;
 	}
 

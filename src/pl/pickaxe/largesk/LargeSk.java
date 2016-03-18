@@ -41,6 +41,7 @@ import pl.pickaxe.largesk.effects.EffLagServer;
 import pl.pickaxe.largesk.events.EvtPlayerViolation;
 import pl.pickaxe.largesk.events.PlayerViolationEvt;
 import pl.pickaxe.largesk.expressions.ExprFullTime;
+import pl.pickaxe.largesk.skinsrestorer.CondPlayerHasSkin;
 import pl.pickaxe.largesk.skinsrestorer.ExprSkinOfPlayer;
 import pl.pickaxe.largesk.util.EnumClassInfo;
 import pl.pickaxe.largesk.util.Metrics;
@@ -105,14 +106,14 @@ public class LargeSk extends JavaPlugin implements Listener {
 		{
 			Xlog.logInfo("I have found AAC on your server. I'm pleased to announce we will work together from now.");
 			EnumClassInfo.create(HackType.class, "hacktype").register();
-			Skript.registerCondition(CondIsBypassed.class, "[aac] %player%('s| is) bypass(ed|ing) aac");
-			Skript.registerCondition(CondOnGround.class, "[aac] %player%('s| is) (on ground|not in air)");
-			Skript.registerCondition(CondCheckEnabled.class, "[aac ](check %-hacktype%|%-hacktype% check) is (enabled|on|running)");
+			Skript.registerCondition(CondIsBypassed.class, "[aac] %player%('s| is) bypass(ed by|ing) aac");
+			Skript.registerCondition(CondOnGround.class, "[aac] %player%('s| is) on ground");
+			Skript.registerCondition(CondCheckEnabled.class, "[aac] (check %-hacktype%|%-hacktype% check) is (enabled|on|running)");
 			Skript.registerExpression(ExprAacPing.class, Integer.class, ExpressionType.PROPERTY, "aac (ping of %player%|%player%'s ping)", "[aac] (ping of %player%|%player%'s ping) by aac");
 			Skript.registerExpression(ExprAacTps.class, Double.class, ExpressionType.SIMPLE, "[aac] tps","tps (of|by) aac");
-			Skript.registerExpression(ExprViolationLevel.class, Integer.class, ExpressionType.PROPERTY, "%player%['s][ aac] [hack[s]|violation[s]|cheat[s]] level of %hacktype%","[aac ] %hacktype% [hack[s]|violation[s]|cheat[s]] level of %player%");
+			Skript.registerExpression(ExprViolationLevel.class, Integer.class, ExpressionType.PROPERTY, "%player%['s][ aac] [hack[s]|violation[s]|cheat[s]] level of %hacktype%","[aac ] %hacktype% [hack[s]|violation[s]|cheat[s]] level of %player%","%player%'s vl of %hacktype%", "%hacktype% vl of %player%");
 			Skript.registerEffect(EffReloadAAC.class, "aac reload [config[s]]","reload aac [config[s]]","reload config[s] of aac");
-			Skript.registerEffect(EffReloadPermissionCache.class, "aac reload permission(s|[s] cache)","reload permission(s|[s] cache) of aac","reload aac's permission(s|[s] cache)");
+			Skript.registerEffect(EffReloadPermissionCache.class, "aac reload permission(s|[s] cache)","reload permission(s|[s] cache) of aac","reload aac['s] permission(s|[s] cache)");
 			Skript.registerEffect(EffEnableCheck.class, "enable ([hack[ ]]check %-hacktype%|%-hacktype% [hack[ ]]check)");
 			Skript.registerEffect(EffDisableCheck.class, "disable ([hack[ ]]check %-hacktype%|%-hacktype% [hack[ ]]check)");
 			
@@ -164,10 +165,11 @@ public class LargeSk extends JavaPlugin implements Listener {
 			}, 0);	
 		}
 		//SkinsRestorer
-		if (s.getPluginManager().isPluginEnabled("SkinsRestorer"))
+		if (s.getPluginManager().isPluginEnabled("SkinsRestorer") && getConfig().getConfigurationSection("enable").getBoolean("SkinsRestorer"))
 		{
 			Xlog.logInfo("SkinsRestorer has been detected! Registring conditions, expressions and other boring stuff..");
-			Skript.registerExpression(ExprSkinOfPlayer.class, String.class, ExpressionType.PROPERTY, "skin of %player%","%player%'s skin");
+			Skript.registerExpression(ExprSkinOfPlayer.class, String.class, ExpressionType.PROPERTY, "skin of %offlineplayer%","%offlineplayer%'s skin");
+			Skript.registerCondition(CondPlayerHasSkin.class, "%offlineplayer% (has|have) [a] skin");
 		}
 		
 		//Metrics

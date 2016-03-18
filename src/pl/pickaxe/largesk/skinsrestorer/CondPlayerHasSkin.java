@@ -1,6 +1,6 @@
 package pl.pickaxe.largesk.skinsrestorer;
 
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 
@@ -15,12 +15,12 @@ public class CondPlayerHasSkin extends Condition {
 	
 	//%player% has skin
 
-	private Expression<Player> p;
+	private Expression<OfflinePlayer> p;
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public boolean init(Expression<?>[] e, int arg1, Kleenean arg2, ParseResult arg3) {
-		p = (Expression<Player>) e[0];
+		p = (Expression<OfflinePlayer>) e[0];
 		return true;
 	}
 
