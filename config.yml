@@ -6,6 +6,14 @@
 # Are a good person :)
 enableMetrics: true
 
+### Pastebin
+
+# Essential to use the pastebin expression
+# How to get? Login/register on pastebion.com
+# Visit this page http://pastebin.com/api
+# Copy the key from the second section - Your Unique Developer API Key
+pastebinDeveloperKey: "blank"
+
 ### Updates ###
 
 updates:
@@ -28,14 +36,14 @@ updates:
 ### Toggles ###
 # Here you can disable registering some expressions, conditions, effects and events
 # If you don't have required plugin, they also won't load,
-# There is no need for you to modify it unless you are having problems
+# There is no need for you to modify it unless you are having troubles
 # Or security issues
 enable:
   AAC: true
   SkinsRestorer: true
-  Lag: true
+  lag: true # The lag server expression
  
 ### Other ### 
  
 # This is something you shouldn't touch, or else this file will be cleared.
-configVersion: 3
+configVersion: 4

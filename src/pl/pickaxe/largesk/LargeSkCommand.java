@@ -32,6 +32,10 @@ public class LargeSkCommand implements CommandExecutor {
 				{
 					
 				}
+				if (args[0].equalsIgnoreCase("reload"))
+				{
+					
+				}
 				else if (args[0].equalsIgnoreCase("check"))
 				{
 					sender.sendMessage("Checking..");
