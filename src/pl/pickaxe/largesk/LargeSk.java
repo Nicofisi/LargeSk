@@ -100,7 +100,7 @@ public class LargeSk extends JavaPlugin implements Listener {
 				
 		//General Expressions
 		Skript.registerExpression(ExprFullTime.class, Long.class, ExpressionType.PROPERTY, "(full|total)[ ]time of %world%","%world%'s (full|total)[ ]time");
-		Skript.registerExpression(ExprPastebin.class, String.class, ExpressionType.SIMPLE, "pastebin upload %string% [(named|[with] name) %-string%] [[with] expire date %-string%] [[with] paste (format|language) %string%]");
+		Skript.registerExpression(ExprPastebin.class, String.class, ExpressionType.SIMPLE, "pastebin upload %string% [(named|[with] name) %-string%] [[with ]expire date %-string%] [[with ]paste (format|language) %-string%]");
 		Skript.registerExpression(ExprLinkGoogle.class, String.class, ExpressionType.SIMPLE, "google link (of|to) [search] %string%");
 		Skript.registerExpression(ExprLinkBing.class, String.class, ExpressionType.SIMPLE, "bing link (of|to) [search] %string%");
 		Skript.registerExpression(ExprLinkDuckDuckGo.class, String.class, ExpressionType.SIMPLE, "duckduckgo link (of|to) [search] %string%");

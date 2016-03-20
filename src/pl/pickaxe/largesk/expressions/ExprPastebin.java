@@ -59,10 +59,40 @@ public class ExprPastebin extends SimpleExpression<String>
 	@Nullable
 	protected String[] get(Event e)
 	{
-		String test = "failed to connect";
+		String ttp;
+		String nop;
+		String ed;
+		String pf;
+		
+		ttp = textToPaste.getSingle(e);
+		if (nameOfPaste == null)
+		{
+			nop = null;
+		}
+		else
+		{
+			nop = nameOfPaste.getSingle(e);
+		}
+		if (expireDate == null)
+		{
+			ed = null;
+		}
+		else
+		{
+			ed = expireDate.getSingle(e);
+		}
+		if (pasteFormat == null)
+		{
+			pf = null;
+		}
+		else
+		{
+			pf = pasteFormat.getSingle(e);
+		}
+		String test = "connection error";
 		try
 		{
-			test = Pastebin.sendPost(textToPaste.getSingle(e), nameOfPaste.getSingle(e), expireDate.getSingle(e), pasteFormat.getSingle(e));
+			test = Pastebin.sendPost(ttp, nop, ed, pf);
 		}
 		catch (Exception e1)
 		{
