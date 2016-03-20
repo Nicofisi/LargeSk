@@ -46,7 +46,8 @@ import pl.pickaxe.largesk.expressions.ExprLinkBing;
 import pl.pickaxe.largesk.expressions.ExprLinkDuckDuckGo;
 import pl.pickaxe.largesk.expressions.ExprLinkGoogle;
 import pl.pickaxe.largesk.expressions.ExprPastebin;
-import pl.pickaxe.largesk.expressions.ExprUrlLink;
+import pl.pickaxe.largesk.expressions.ExprUrlDecode;
+import pl.pickaxe.largesk.expressions.ExprUrlEncode;
 import pl.pickaxe.largesk.skinsrestorer.CondPlayerHasSkin;
 import pl.pickaxe.largesk.skinsrestorer.ExprSkinOfPlayer;
 import pl.pickaxe.largesk.util.EnumClassInfo;
@@ -104,7 +105,8 @@ public class LargeSk extends JavaPlugin implements Listener {
 		Skript.registerExpression(ExprLinkBing.class, String.class, ExpressionType.SIMPLE, "bing link (of|to) [search] %string%");
 		Skript.registerExpression(ExprLinkDuckDuckGo.class, String.class, ExpressionType.SIMPLE, "duckduckgo link (of|to) [search] %string%");
 		Skript.registerExpression(ExprLinkAsk.class, String.class, ExpressionType.SIMPLE, "ask link (of|to) [search] %string%");
-		Skript.registerExpression(ExprUrlLink.class, String.class, ExpressionType.SIMPLE, "%string% in [the] url format");
+		Skript.registerExpression(ExprUrlEncode.class, String.class, ExpressionType.SIMPLE, "url encoded %string%");
+		Skript.registerExpression(ExprUrlDecode.class, String.class, ExpressionType.SIMPLE, "url decoded %string%");
 		
 		//Lag expression disable check
 		if (getConfig().getConfigurationSection("enable").getBoolean("lag"))

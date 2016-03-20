@@ -12,7 +12,7 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 
-public class ExprUrlLink extends SimpleExpression<String>
+public class ExprUrlEncode extends SimpleExpression<String>
 {
 	private Expression<String> search;
 	
