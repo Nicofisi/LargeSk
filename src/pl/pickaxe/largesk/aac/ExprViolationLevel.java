@@ -37,7 +37,7 @@ public class ExprViolationLevel extends SimpleExpression<Integer>
 	public boolean init(Expression<?>[] expr, int arg1, Kleenean arg2, ParseResult arg3)
 	{
 		player = (Expression<Player>) expr[0];
-		hack = (Expression<HackType>) expr[0];
+		hack = (Expression<HackType>) expr[1];
 		return true;
 	}
 

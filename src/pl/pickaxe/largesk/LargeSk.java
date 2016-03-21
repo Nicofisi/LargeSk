@@ -76,12 +76,19 @@ public class LargeSk extends JavaPlugin implements Listener {
 		
 		if ( ! configf.exists() || lastestConfigVersion != getConfig().getInt("configVersion"))
 		{
-			Xlog.logWarning("The config.yml file does not exist or is outdated.");
-			Xlog.logInfo("I'll copy it from the plugin's jar file now.");
 			configf.getParentFile().mkdirs();
 			if (configf.exists()) {
-				File oldConfig = new File("config-old-" + System.currentTimeMillis());
+				Xlog.logWarning("Your config.yml file is outdated.");
+				Xlog.logInfo("I'll copy the default one from the plugin's .jar file in a moment.");
+				String path = this.getDataFolder() + "/config-old-ver" + getConfig().getInt("configVersion") + "-" + System.currentTimeMillis();
+				File oldConfig = new File(path);
 				configf.renameTo(oldConfig);
+				Xlog.logInfo("Your old configuration was moved to " + path);
+			}
+			else
+			{
+				Xlog.logWarning("The config.yml file does not exist.");
+				Xlog.logInfo("I'll copy the default config from the plugin's .jar file now.");
 			}
 			copy(getResource("config.yml"), configf);
 			reloadConfig();
