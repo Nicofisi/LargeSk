@@ -24,4 +24,8 @@ public class Xlog
 	{
 		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GREEN + "[" + ChatColor.GREEN + LargeSk.getPlugin(LargeSk.class).getDescription().getName() + " " + LargeSk.getPlugin(LargeSk.class).getDescription().getVersion() + ChatColor.GREEN + " UPDATER" + ChatColor.DARK_GREEN + "] " + ChatColor.RESET + msg);
 	}
+	public static void logRaw(String msg)
+	{
+		Bukkit.getConsoleSender().sendMessage(msg);
+	}
 }

@@ -36,6 +36,9 @@ import pl.pickaxe.largesk.aac.EffReloadPermissionCache;
 import pl.pickaxe.largesk.aac.ExprAacPing;
 import pl.pickaxe.largesk.aac.ExprAacTps;
 import pl.pickaxe.largesk.aac.ExprViolationLevel;
+import pl.pickaxe.largesk.bungee.EffSendPluginMessage;
+import pl.pickaxe.largesk.bungee.EvtPluginMessageReceived;
+import pl.pickaxe.largesk.bungee.LargeMessenger;
 import pl.pickaxe.largesk.effects.EffDisableAllPlugins;
 import pl.pickaxe.largesk.effects.EffLagServer;
 import pl.pickaxe.largesk.events.EvtPlayerViolation;
@@ -59,7 +62,11 @@ public class LargeSk extends JavaPlugin implements Listener {
 	
 	public static File configf;
     public static FileConfiguration config;
-	
+    
+    public static LargeSk getPlugin() {
+        return LargeSk.getPlugin(LargeSk.class);
+    }
+    
 	@Override
 	public void onEnable() {
 		
@@ -72,7 +79,7 @@ public class LargeSk extends JavaPlugin implements Listener {
 		configf = new File(getDataFolder(), "config.yml");
 		
 		//Defines the lastest config version
-		int lastestConfigVersion = 4;
+		int lastestConfigVersion = 5;
 		
 		if ( ! configf.exists() || lastestConfigVersion != getConfig().getInt("configVersion"))
 		{
@@ -214,12 +221,46 @@ public class LargeSk extends JavaPlugin implements Listener {
 			Xlog.logInfo("You have disabled Metrics, sorry to hear that but it's not my problem ¯\\_(ツ)_/¯");
 		}
 		
+		//BungeeCord
+		if (getConfig().getConfigurationSection("bungee").getBoolean("use"))
+		{
+			//Message
+			Xlog.logInfo("You use BungeeCord! I love it <3");
+			
+			//Register the event below
+			LargeMessenger msg = new LargeMessenger();
+			msg.getMessenger().registerMessenger();
+			
+			//Effect
+			Skript.registerEffect(EffSendPluginMessage.class, "proxy send %string% to %string%");
+			
+			//The PluginMessageReceived Event
+			Skript.registerEvent("Message Receive", SimpleEvent.class,
+			EvtPluginMessageReceived.class, new String[] { "message [(receiv(e|ing)|get[ting])]" });
+			
+			//EvtPluginMessageReceived getMessage()
+			EventValues.registerEventValue(EvtPluginMessageReceived.class,
+			String.class, new Getter<String, EvtPluginMessageReceived>() {
+				@Override
+				public String get(
+						EvtPluginMessageReceived event){
+					return event.getMessage();
+				}
+			}, 0);
+			
+		}
 		//Register the command
 		this.getCommand("largesk").setExecutor(new LargeSkCommand());
 		
-		//Announcing how much time enabling took
+		//You see
 		Xlog.logInfo("Share your problems and ideas on https://github.com/Nicofisi/LargeSk/issues");
+		
+		Bukkit.getScheduler().runTaskAsynchronously(this, SkAddons::logAddons);
+		Xlog.logInfo("I will show you a list of your Skript as soon as everything loads up.");
+		
+		//Announcing how much time enabling took
 		eTime = System.currentTimeMillis() - eTime;
+		
 		Xlog.logInfo(ChatColor.YELLOW  + "=== ENABLE " + ChatColor.GREEN + "COMPLETE" + ChatColor.YELLOW + " (Took " + ChatColor.LIGHT_PURPLE + eTime + "ms" + ChatColor.YELLOW + ") ===");
 		
 		//Update check schedule
@@ -231,10 +272,8 @@ public class LargeSk extends JavaPlugin implements Listener {
 		{
 			Xlog.logInfo("Checking for updates is disabled in config, so I'll check it only once,");
 			Xlog.logInfo("And I won't disturb you anymore, okay?");
-			this.checkUpdates();
+			Bukkit.getScheduler().runTaskAsynchronously(this, this::checkUpdates);
 		}
-		Bukkit.getScheduler().runTaskLaterAsynchronously(this, SkAddons::logAddons, 600);
-		Xlog.logInfo("I will show you a list of your Skript addons in 30 seconds.");
 	}
 	
 	//On disable

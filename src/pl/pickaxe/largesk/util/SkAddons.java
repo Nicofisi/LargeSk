@@ -12,8 +12,10 @@ public class SkAddons
 		{
 			num++;
 			list = list + addon.getName() + ", ";
-			list = list.substring(0, list.length() - 2);
 		}
+		
+		list = list.substring(0, list.length() - 2);
+		
 		if (num > 1)
 		{
 			Xlog.logInfo("You are using " + num + " addons for Skript. A list of them: " + list);

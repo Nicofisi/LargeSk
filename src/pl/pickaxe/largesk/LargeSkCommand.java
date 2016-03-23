@@ -21,82 +21,11 @@ public class LargeSkCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if ( sender instanceof Player && sender.hasPermission("largesk.command.help") || ! (sender instanceof Player))
+		if (args.length == 0)
 		{
-			if ( ! (args.length == 0)) {
-				if ( sender instanceof Player && ! sender.hasPermission("largesk.command." + args[0]))
-				{
-					sender.sendMessage(ChatColor.GRAY + "You are lacking the permission " + ChatColor.YELLOW + ChatColor.ITALIC + "largesk.command." + args[0] + ChatColor.GRAY + " .");
-				}
-				if (args[0].equalsIgnoreCase("info"))
-				{
-					
-				}
-				if (args[0].equalsIgnoreCase("reload"))
-				{
-					
-				}
-				else if (args[0].equalsIgnoreCase("check"))
-				{
-					sender.sendMessage("Checking..");
-				    String newVersion = "";
-				    try
-				    {
-				        BufferedReader in = new BufferedReader(new InputStreamReader(new URL("https://raw.githubusercontent.com/Nicofisi/LargeSk/master/lastest.version").openStream()));
-				        newVersion = in.readLine();
-				        in.close();
-				    }
-				    catch (Exception e)
-				    {
-				        sender.sendMessage(e.getMessage());
-				        sender.sendMessage("Could not check for updates (info above)");
-				    }
-				    String currentVersion = Bukkit.getPluginManager().getPlugin("LargeSk").getDescription().getVersion();
-				    if ( ! Objects.equals(currentVersion, newVersion))
-				    {
-				    	sender.sendMessage("LargeSk" + newVersion + "was released! You are using" + currentVersion + ".");
-				    	sender.sendMessage("Download it from https://github.com/Nicofisi/LargeSk/releases");
-				    }
-				    else
-				    {
-				        sender.sendMessage("It seems like your using the latest version of the plugin.");
-				    }
-				}
-				else if (args[0].equalsIgnoreCase("update"))
-				{
-					sender.sendMessage("This is not implemented yet.");
-				}
-				else if (args[0].equalsIgnoreCase("debug"))
-				{
-					if (sender instanceof Player)
-					{
-						sender.sendMessage(ChatColor.GRAY + "The message has been sent to the console.");
-					}
-					Xlog.logInfo(ChatColor.YELLOW  + "=== DEBUG " + ChatColor.GREEN + "START" + ChatColor.YELLOW + " ===");
-					Xlog.logInfo(ChatColor.YELLOW  + "=== PLUGINS " + ChatColor.YELLOW + " ===");
-					for (Plugin plugin : Bukkit.getPluginManager().getPlugins())
-					{
-						Xlog.logInfo(plugin.getName() + " " + plugin.getDescription().getVersion() + " >> " + plugin.getDescription().getAuthors());;
-					}
-					Xlog.logInfo(ChatColor.YELLOW  + "=== SERVER INFO " + ChatColor.YELLOW + " ===");
-					Xlog.logInfo("Server version: " + Bukkit.getVersion());
-					Xlog.logInfo("Bukkit version: " + Bukkit.getBukkitVersion());
-					Xlog.logInfo(ChatColor.YELLOW  + "=== SKRIPT INFO " + ChatColor.YELLOW + " ===");
-					Xlog.logInfo("Skript version: " + Bukkit.getPluginManager().getPlugin("Skript").getDescription().getVersion());
-					Xlog.logInfo("Skript Addons: " + Skript.getAddons());
-					String addlist = "";
-					for (SkriptAddon addon : Skript.getAddons())
-					{
-						addlist = addlist + addon.getName() + " " + Bukkit.getPluginManager().getPlugin(addon.toString()).getDescription().getVersion() + ", ";
-						addlist = addlist.substring(0, addlist.length() - 2);
-					}
-					Xlog.logInfo("With versions: " + addlist);
-					Xlog.logInfo(ChatColor.YELLOW  + "=== DEBUG " + ChatColor.GREEN + "END" + ChatColor.YELLOW + " ===");
-				}
-				else
-				{
-					sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.YELLOW + "/lsk " + ChatColor.GRAY + "to get a list of arguments.");
-				}
+			if (sender instanceof Player && ! sender.hasPermission("largesk.command.help"))
+			{
+				sender.sendMessage(ChatColor.GRAY + "You are lacking the permission " + ChatColor.YELLOW + ChatColor.ITALIC + "largesk.command.help " + ChatColor.GRAY + ".");
 			}
 			else
 			{
@@ -106,11 +35,81 @@ public class LargeSkCommand implements CommandExecutor {
 				sender.sendMessage(ChatColor.YELLOW + "/lsk update" + ChatColor.GRAY + " - not implemented yet");
 				sender.sendMessage(ChatColor.YELLOW + "/lsk debug" + ChatColor.GRAY + " - debug info for the developer");
 			}
+			return true;
+		}
+		if ( sender instanceof Player && ! sender.hasPermission("largesk.command." + args[0]))
+		{
+			sender.sendMessage(ChatColor.GRAY + "You are lacking the permission " + ChatColor.YELLOW + ChatColor.ITALIC + "largesk.command." + args[0] + ChatColor.GRAY + " .");
+		}
+		if (args[0].equalsIgnoreCase("info"))
+		{
+			sender.sendMessage(ChatColor.GRAY + "This is not implemented yet.");
+		}
+		if (args[0].equalsIgnoreCase("reload"))
+		{
+			sender.sendMessage(ChatColor.GRAY + "This is not implemented yet. (will be soon)");
+		}
+		else if (args[0].equalsIgnoreCase("check"))
+		{
+			sender.sendMessage("Checking..");
+		    String newVersion = "";
+		    try
+		    {
+		        BufferedReader in = new BufferedReader(new InputStreamReader(new URL("https://raw.githubusercontent.com/Nicofisi/LargeSk/master/lastest.version").openStream()));
+		        newVersion = in.readLine();
+		        in.close();
+		    }
+		    catch (Exception e)
+		    {
+		        sender.sendMessage(e.getMessage());
+		        sender.sendMessage("Could not check for updates (info above)");
+		    }
+		    String currentVersion = Bukkit.getPluginManager().getPlugin("LargeSk").getDescription().getVersion();
+		    if ( ! Objects.equals(currentVersion, newVersion))
+		    {
+		    	sender.sendMessage(ChatColor.GRAY + "LargeSk " + ChatColor.YELLOW + newVersion + ChatColor.GRAY + " was released! You are using" + ChatColor.YELLOW + currentVersion + ChatColor.GRAY + ".");
+		    	sender.sendMessage(ChatColor.GRAY + "Download it from https://github.com/Nicofisi/LargeSk/releases");
+		    }
+		    else
+		    {
+		        sender.sendMessage("It seems like your using the latest version of the plugin.");
+		    }
+		}
+		else if (args[0].equalsIgnoreCase("update"))
+		{
+			sender.sendMessage(ChatColor.GRAY + "This is not implemented yet.");
+		}
+		else if (args[0].equalsIgnoreCase("debug"))
+		{
+			if (sender instanceof Player)
+			{
+				sender.sendMessage(ChatColor.GRAY + "The message has been sent to the console.");
+			}
+			Xlog.logInfo(ChatColor.YELLOW  + "=== DEBUG " + ChatColor.GREEN + "START" + ChatColor.YELLOW + " ===");
+			Xlog.logInfo(ChatColor.YELLOW  + "=== PLUGINS " + ChatColor.YELLOW + " ===");
+			for (Plugin plugin : Bukkit.getPluginManager().getPlugins())
+			{
+				Xlog.logInfo(plugin.getName() + " " + plugin.getDescription().getVersion() + " >> " + plugin.getDescription().getAuthors());;
+			}
+			Xlog.logInfo(ChatColor.YELLOW  + "=== SERVER INFO " + ChatColor.YELLOW + " ===");
+			Xlog.logInfo("Server version: " + Bukkit.getVersion());
+			Xlog.logInfo("Bukkit version: " + Bukkit.getBukkitVersion());
+			Xlog.logInfo(ChatColor.YELLOW  + "=== SKRIPT INFO " + ChatColor.YELLOW + " ===");
+			Xlog.logInfo("Skript version: " + Bukkit.getPluginManager().getPlugin("Skript").getDescription().getVersion());
+			Xlog.logInfo("Skript Addons: " + Skript.getAddons());
+			String addlist = "";
+			for (SkriptAddon addon : Skript.getAddons())
+			{
+				addlist = addlist + addon.getName() + " " + Bukkit.getPluginManager().getPlugin(addon.toString()).getDescription().getVersion() + ", ";
+			}
+			addlist = addlist.substring(0, addlist.length() - 2);
+			Xlog.logInfo("With versions: " + addlist);
+			Xlog.logInfo(ChatColor.YELLOW  + "=== DEBUG " + ChatColor.GREEN + "END" + ChatColor.YELLOW + " ===");
 		}
 		else
 		{
-			sender.sendMessage(ChatColor.GRAY + "You are lacking the permission " + ChatColor.YELLOW + ChatColor.ITALIC + "largesk.command.help " + ChatColor.GRAY + ".");
+			sender.sendMessage(ChatColor.GRAY + "Use " + ChatColor.YELLOW + "/lsk " + ChatColor.GRAY + "to get a list of arguments.");
 		}
-		return true;
+	return true;
 	}
 }

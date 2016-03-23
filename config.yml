@@ -6,6 +6,12 @@
 # Are a good person :)
 enableMetrics: true
 
+### BungeeCord
+
+bungee:
+  # Set it to true if you use BungeeCord
+  use: false
+
 ### Pastebin
 
 # Essential to use the pastebin expression
@@ -46,4 +52,4 @@ enable:
 ### Other ### 
  
 # This is something you shouldn't touch, or else this file will be cleared.
-configVersion: 4
+configVersion: 5
