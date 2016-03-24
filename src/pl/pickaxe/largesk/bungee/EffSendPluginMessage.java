@@ -10,7 +10,6 @@ import com.google.common.io.ByteStreams;
 
 import javax.annotation.Nullable;
 
-import ch.njol.skript.SkriptAPIException;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
@@ -45,9 +44,9 @@ public class EffSendPluginMessage extends Effect
 		out.writeUTF("Forward");
 		String rec = srv.getSingle(e);
 		String msag = msg.getSingle(e);
-		if (rec.equalsIgnoreCase("all"))
+		if (rec == null || rec.equalsIgnoreCase("all"))
 		{
-			rec = rec.toUpperCase();
+			rec = "ALL";
 		}
 		out.writeUTF(rec);
 		out.writeUTF("LargeSkEff");
@@ -56,7 +55,8 @@ public class EffSendPluginMessage extends Effect
 		Player pl = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
 		if (pl == null)
 		{
-			throw new SkriptAPIException("Unfortunately, you can't send nor receive proxy messages when there are no players online. Add a check for that to your script to remove the error.");
+			//throw new SkriptAPIException("Unfortunately, you can't send nor receive proxy messages when there are no players online. Add a check for that to your script to remove the error.");
+			return;
 		}
 		pl.sendPluginMessage(LargeSk.getPlugin(), "BungeeCord", out.toByteArray());
 	}

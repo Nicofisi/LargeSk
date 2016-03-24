@@ -10,7 +10,6 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 
 import pl.pickaxe.largesk.LargeSk;
-import pl.pickaxe.largesk.util.Xlog;
 
 public class LargeMessenger implements PluginMessageListener
 {	
@@ -31,22 +30,16 @@ public class LargeMessenger implements PluginMessageListener
 	@Override
 	public void onPluginMessageReceived(String channel, Player player, byte[] message)
 	{
-		if ( ! channel.equals("BungeeCord"))
-		{
-			return;
-		}
+	
+		if ( ! channel.equals("BungeeCord")) return;
+		
 		ByteArrayDataInput in = ByteStreams.newDataInput(message);
-		String subchannel = in.readUTF();
-		if (subchannel.equals("Forward"))
-		{
-			String moresub = in.readUTF();
-			if (moresub.equals("LargeSkEff"))
-			{
-				String msg = in.readUTF();
-				Xlog.logInfo(channel + " > " + subchannel + " > " + moresub + " >> " + msg);
-				srv.getPluginManager().callEvent(new EvtPluginMessageReceived(msg));
-			}
-		}
+		String sub = in.readUTF();
+		
+		if ( ! sub.equals("LargeSkEff")) return;
+		
+		String msg = in.readUTF();
+		srv.getPluginManager().callEvent(new EvtPluginMessageReceived(msg));
 	}
 }
 	 

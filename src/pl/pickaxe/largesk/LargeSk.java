@@ -232,7 +232,7 @@ public class LargeSk extends JavaPlugin implements Listener {
 			msg.getMessenger().registerMessenger();
 			
 			//Effect
-			Skript.registerEffect(EffSendPluginMessage.class, "proxy send %string% to %string%");
+			Skript.registerEffect(EffSendPluginMessage.class, "proxy send %string% [to %-string%]");
 			
 			//The PluginMessageReceived Event
 			Skript.registerEvent("Message Receive", SimpleEvent.class,
