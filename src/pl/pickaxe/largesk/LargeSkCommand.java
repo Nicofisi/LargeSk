@@ -80,8 +80,17 @@ public class LargeSkCommand implements CommandExecutor {
 		else if (args[0].equalsIgnoreCase("update"))
 		{
 			sender.sendMessage(ChatColor.GRAY + "[LargeSk]> " + ChatColor.YELLOW + "The update progress will be shown in console");
-			Updater upd = new Updater();
-			upd.runUpdate();
+			Updater u = new Updater();
+			u.runUpdate();
+		}
+		else if (args[0].equalsIgnoreCase("xlogtest"))
+		{
+			Xlog.logInfo("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+			Xlog.logWarning("Ut porttitor feugiat mi a vehicula. Curabitur sed urna quam.");
+			Xlog.logError("Morbi et rhoncus dolor, vitae commodo enim.");
+			Xlog.logUpdater("Mauris ac odio mattis, fringilla nisi molestie, blandit dolor.");
+			Xlog.logDefault("Phasellus non sem eget dolor ultrices commodo et dignissim dolor.");
+			Xlog.logRaw("Nunc cursus ex vitae diam mollis, ut faucibus neque fringilla.");
 		}
 		else if (args[0].equalsIgnoreCase("debug"))
 		{

@@ -1,11 +1,12 @@
 main: pl.pickaxe.largesk.LargeSk
 name: LargeSk
-version: 1.0.1
+version: 1.0.2
 description: An addon for Skript with some cool features.
 author: Nicofisi
 website: http://github.com/Nicofisi/LargeSk
 depend: [Skript]
 softdepend: [AAC]
+loadbefore: [Umbaska]
 
 commands:
   largesk:
