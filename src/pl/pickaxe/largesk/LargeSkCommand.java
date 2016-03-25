@@ -15,6 +15,7 @@ import org.bukkit.plugin.Plugin;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
+import pl.pickaxe.largesk.util.Updater;
 import pl.pickaxe.largesk.util.Xlog;
 
 public class LargeSkCommand implements CommandExecutor {
@@ -32,7 +33,7 @@ public class LargeSkCommand implements CommandExecutor {
 				sender.sendMessage(ChatColor.GRAY + "[LargeSk]> " + ChatColor.YELLOW + "An Addon for Skript");
 				sender.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "/lsk info" + ChatColor.GRAY + " - version, author etc.");
 				sender.sendMessage(ChatColor.YELLOW + "/lsk check" + ChatColor.GRAY + " - check for updates");
-				sender.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "/lsk update" + ChatColor.GRAY + " - not implemented yet");
+				sender.sendMessage(ChatColor.YELLOW + "/lsk update" + ChatColor.GRAY + " - not implemented yet");
 				sender.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "/lsk reload" + ChatColor.GRAY + " - reloads config");
 				sender.sendMessage(ChatColor.YELLOW + "/lsk debug" + ChatColor.GRAY + " - debug info for the developer");
 			}
@@ -46,7 +47,7 @@ public class LargeSkCommand implements CommandExecutor {
 		{
 			sender.sendMessage(ChatColor.GRAY + "This is not implemented yet.");
 		}
-		if (args[0].equalsIgnoreCase("reload"))
+		else if (args[0].equalsIgnoreCase("reload"))
 		{
 			sender.sendMessage(ChatColor.GRAY + "This is not implemented yet. (will be soon)");
 		}
@@ -78,7 +79,9 @@ public class LargeSkCommand implements CommandExecutor {
 		}
 		else if (args[0].equalsIgnoreCase("update"))
 		{
-			sender.sendMessage(ChatColor.GRAY + "This is not implemented yet.");
+			sender.sendMessage("Starting update..");
+			Updater upd = new Updater();
+			upd.runUpdate();
 		}
 		else if (args[0].equalsIgnoreCase("debug"))
 		{

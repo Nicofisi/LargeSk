@@ -42,6 +42,11 @@ public class EnumClassInfo<E extends Enum<E>> {
     }
 
     public void register() {
+		//if (Classes.getClassInfo(codeName) == null)
+		//{
+		//	Xlog.logInfo("Skipped registring type with codename " + codeName + " as it was already registered");
+		//	return;
+		//}
         Classes.registerClass(classInfo
                 .user(codeName + "s?")
                 .parser(new Parser<E>() {

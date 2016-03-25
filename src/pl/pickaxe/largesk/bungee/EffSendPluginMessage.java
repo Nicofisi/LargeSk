@@ -10,6 +10,7 @@ import com.google.common.io.ByteStreams;
 
 import javax.annotation.Nullable;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
@@ -55,7 +56,7 @@ public class EffSendPluginMessage extends Effect
 		Player pl = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
 		if (pl == null)
 		{
-			//throw new SkriptAPIException("Unfortunately, you can't send nor receive proxy messages when there are no players online. Add a check for that to your script to remove the error.");
+			Skript.error("You can't send proxy messages when there are no players online.");
 			return;
 		}
 		pl.sendPluginMessage(LargeSk.getPlugin(), "BungeeCord", out.toByteArray());
