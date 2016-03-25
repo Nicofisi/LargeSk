@@ -16,7 +16,7 @@ import pl.pickaxe.largesk.LargeSk;
 
 public class Updater
 {
-	public static boolean updateSession = false;
+	public static String updatedVersion = null;
 	
 	public void runUpdate()
 	{
@@ -86,7 +86,7 @@ public class Updater
 					return;
 				}
 				Xlog.logUpdater("The update was downloaded! Just restart your server :)");
-				updateSession = true;
+				Updater.updatedVersion = newVersion;
 			}
 		});
 		
@@ -101,7 +101,6 @@ public class Updater
 	//Checking updates, run on server startup and later by the Bukkit scheduler
 	public void checkUpdates()
 	{
-		if (updateSession) return;
 		
 		Xlog.logUpdater("Checking for updates..");
 	    String newVersion = "";
@@ -115,15 +114,33 @@ public class Updater
 	    {
 	        Xlog.logError(e.getCause().getMessage());
 	    }
-	    String currentVersion = LargeSk.getPlugin().getDescription().getVersion();
+	    String currentVersion;
+	   	currentVersion = LargeSk.getPlugin().getDescription().getVersion();
 	    if ( ! Objects.equals(currentVersion, newVersion))
 	    {
-	    	Xlog.logUpdater("LargeSk " + newVersion + " was released! You are using " + currentVersion + ".");
-	    	Xlog.logUpdater("To download the update, just use /lsk update");
+	    	if (updatedVersion == null)
+	    	{
+	    		Xlog.logUpdater("LargeSk " + newVersion + " was released! You are using " + currentVersion + ".");
+	    		Xlog.logUpdater("To download the update, just use /lsk update");
+	    	}
+	    	else
+	    	{
+	    		Xlog.logUpdater("New version of LargeSk, " + newVersion + ", was found.");
+	    		Xlog.logUpdater("I know you downloaded an update in this session already, but the developer published even cooler one");
+	    		Xlog.logUpdater("Currently " + currentVersion + "is enabled, and " + updatedVersion + " is downloaded");
+	    		Xlog.logUpdater("Use the command /lsk update again!");
+	    	}
 	    }
 	    else
 	    {
-	    	Xlog.logUpdater("It seems like your using the latest version of the plugin.");
+	    	if (updatedVersion == null)
+	    	{
+	    		Xlog.logUpdater("It seems like your using the latest version of the plugin.");
+	    	}
+	    	else
+	    	{
+	    		Xlog.logUpdater("The version of plugin you downloaded is the lastest one (but is still awaiting for a server restart)");
+	    	}
 	    }
 	}
 	public void scheduleUpdates()

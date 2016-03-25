@@ -16,7 +16,7 @@ import pl.pickaxe.largesk.util.Updater;
 
 public class LargeSk extends JavaPlugin implements Listener {
 	
-	public static boolean debug = true;
+	public static boolean debug = false;
     
     public static LargeSk getPlugin() {
         return LargeSk.getPlugin(LargeSk.class);
@@ -48,7 +48,7 @@ public class LargeSk extends JavaPlugin implements Listener {
 		
 		//Also obvious
 		Bukkit.getScheduler().runTaskAsynchronously(this, SkAddons::logAddons);
-		Xlog.logInfo("I will show you a list of your Skript as soon as everything loads up.");
+		Xlog.logInfo("I will show you a list of your Skript addons as soon as everything loads up.");
 		
 		//Announcing how much time enabling took
 		eTime = System.currentTimeMillis() - eTime;

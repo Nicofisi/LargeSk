@@ -49,11 +49,11 @@ public class LargeSkCommand implements CommandExecutor {
 		}
 		else if (args[0].equalsIgnoreCase("reload"))
 		{
-			sender.sendMessage(ChatColor.GRAY + "This is not implemented yet. (will be soon)");
+			sender.sendMessage(ChatColor.GRAY + "This is not implemented yet. (Will be soon)");
 		}
 		else if (args[0].equalsIgnoreCase("check"))
 		{
-			sender.sendMessage("Checking..");
+			sender.sendMessage(ChatColor.GRAY + "Checking..");
 		    String newVersion = "";
 		    try
 		    {
@@ -64,7 +64,7 @@ public class LargeSkCommand implements CommandExecutor {
 		    catch (Exception e)
 		    {
 		        sender.sendMessage(e.getMessage());
-		        sender.sendMessage("Could not check for updates (info above)");
+		        sender.sendMessage(ChatColor.GRAY + "Could not check for updates (info above)");
 		    }
 		    String currentVersion = Bukkit.getPluginManager().getPlugin("LargeSk").getDescription().getVersion();
 		    if ( ! Objects.equals(currentVersion, newVersion))
