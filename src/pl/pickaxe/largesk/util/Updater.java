@@ -3,15 +3,12 @@ package pl.pickaxe.largesk.util;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
 import org.apache.commons.io.FileUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 
 import pl.pickaxe.largesk.LargeSk;
 
@@ -78,26 +75,8 @@ public class Updater
 			Xlog.logUpdater("The file wasn't moved to the plugins folder for some reason. What.");
 			return;
 		}
-		File updater = new File(LargeSk.getPlugin().getDataFolder() + File.separator + "bin" + File.separator, "LargeSkUpdater.jar");
-		updater.getParentFile().mkdirs();
-		Copier cp = new Copier();
-		Xlog.logUpdater("Trying to extract the updater..");
-		InputStream is = getClass().getClassLoader().getResourceAsStream("LargeSkUpdater.jar");
-		if (is == null)
-		{
-			Xlog.logError("The input stream was null, maybe updater doesn't exist? Don't worry.");
-			Xlog.logWarning("You don't have to do nothing. Just restart your server later and the new version will be enabled");
-			return;
-		}
-		cp.copy(is, updater);
-		Xlog.logUpdater("Done! Enabling updater now..");
-		Plugin lsUpdater = Bukkit.getPluginManager().getPlugin("LargeSk/bin/LargeSkUpdater.jar");
-		if (lsUpdater == null)
-		{
-			Xlog.logError("Could not parse LargeSk/bin/LargeSkUpdater.jar as Plugin");
-			return;
-		}
-		Bukkit.getPluginManager().enablePlugin(lsUpdater);
+		Xlog.logUpdater("The update was downloaded! Just restart your server :)");
+		LargeSk.updateSession = true;
 	}
 	public void removeOld()
 	{

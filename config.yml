@@ -35,7 +35,6 @@ updates:
   notify: true
   
   # Would you like to enable command for downloading an update?
-  # It's not inplemented yet.
   # There is no reason for you to disable it :P
   command: true
  

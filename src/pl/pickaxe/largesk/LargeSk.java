@@ -22,10 +22,10 @@ import pl.pickaxe.largesk.util.SkAddons;
 
 public class LargeSk extends JavaPlugin implements Listener {
 	
-	public static boolean debug = true;
+	public static boolean debug = false;
 	public static int lastestConfigVersion = 5;
+	public static boolean updateSession = false;
 	
-//	public boolean afterUpdate = false;
 	public static File configf;
     public static FileConfiguration config;
     
@@ -45,12 +45,7 @@ public class LargeSk extends JavaPlugin implements Listener {
 			Xlog.logInfo("The LargeSkUpdater is enabled! So you were updating the plugin? Nice!");
 			Plugin lsu = Bukkit.getPluginManager().getPlugin("LargeSkUpdater");
 			Bukkit.getPluginManager().disablePlugin(lsu);
-			//afterUpdate = true;
 		}
-		
-		//Debug
-		//String jar = new java.io.File(LargeSk.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getName();
-		//Xlog.logInfo("The name of your jar is " + jar);
 		
 		//Configs
 		configf = new File(getDataFolder(), "config.yml");
@@ -125,6 +120,7 @@ public class LargeSk extends JavaPlugin implements Listener {
 	@Override
 	public void onDisable() {
 		Xlog.logInfo("Bye, Senpai!");
+		Bukkit.getScheduler().cancelTasks(this);
 		if (getConfig().getBoolean("enableMetrics"))
 		{
 			try {
@@ -142,6 +138,8 @@ public class LargeSk extends JavaPlugin implements Listener {
 	//Checking updates, run on server startup and later by the Bukkit scheduler
 	public void checkUpdates()
 	{
+		if (updateSession) return;
+		
 		Xlog.logUpdater("Checking for updates..");
 	    String newVersion = "";
 	    try

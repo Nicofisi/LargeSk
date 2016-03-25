@@ -79,7 +79,7 @@ public class LargeSkCommand implements CommandExecutor {
 		}
 		else if (args[0].equalsIgnoreCase("update"))
 		{
-			sender.sendMessage("Starting update..");
+			sender.sendMessage(ChatColor.GRAY + "[LargeSk]> " + ChatColor.YELLOW + "The update progress will be shown in console");
 			Updater upd = new Updater();
 			upd.runUpdate();
 		}
