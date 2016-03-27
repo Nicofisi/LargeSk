@@ -3,8 +3,10 @@ package pl.pickaxe.largesk;
 import java.io.IOException;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.ExpressionType;
@@ -27,16 +29,21 @@ import pl.pickaxe.largesk.bungee.EvtPluginMessageReceived;
 import pl.pickaxe.largesk.bungee.LargeMessenger;
 import pl.pickaxe.largesk.effects.EffDisableAllPlugins;
 import pl.pickaxe.largesk.effects.EffLagServer;
+import pl.pickaxe.largesk.events.EvtPlayerChunkChange;
 import pl.pickaxe.largesk.events.EvtPlayerViolation;
+import pl.pickaxe.largesk.events.PlayerChunkChangeEvt;
 import pl.pickaxe.largesk.events.PlayerViolationEvt;
 import pl.pickaxe.largesk.expressions.ExprFullTime;
 import pl.pickaxe.largesk.expressions.ExprLinkAsk;
 import pl.pickaxe.largesk.expressions.ExprLinkBing;
 import pl.pickaxe.largesk.expressions.ExprLinkDuckDuckGo;
 import pl.pickaxe.largesk.expressions.ExprLinkGoogle;
+import pl.pickaxe.largesk.expressions.ExprNewChunk;
+import pl.pickaxe.largesk.expressions.ExprOldChunk;
 import pl.pickaxe.largesk.expressions.ExprPastebin;
 import pl.pickaxe.largesk.expressions.ExprUrlDecode;
 import pl.pickaxe.largesk.expressions.ExprUrlEncode;
+import pl.pickaxe.largesk.protocollib.EffMakePlayersSleep;
 import pl.pickaxe.largesk.skinsrestorer.CondPlayerHasSkin;
 import pl.pickaxe.largesk.skinsrestorer.ExprSkinOfPlayer;
 import pl.pickaxe.largesk.util.EnumClassInfo;
@@ -59,17 +66,57 @@ public class Register
 		Skript.registerExpression(ExprLinkAsk.class, String.class, ExpressionType.SIMPLE, "ask link (of|to) [search] %string%");
 		Skript.registerExpression(ExprUrlEncode.class, String.class, ExpressionType.SIMPLE, "url encoded %string%");
 		Skript.registerExpression(ExprUrlDecode.class, String.class, ExpressionType.SIMPLE, "url decoded %string%");
+		Skript.registerExpression(ExprNewChunk.class, Chunk.class, ExpressionType.SIMPLE, "new chunk");
+		Skript.registerExpression(ExprOldChunk.class, Chunk.class, ExpressionType.SIMPLE, "old chunk");
 		
 		//Lag expression disable check
 		if (config.getConfigurationSection("enable").getBoolean("lag"))
 		{
 			Skript.registerEffect(EffLagServer.class, "lag [the] server for %timespan%","(make|create) a %timespan% lag[[ ]spike]");
 		}
+		
+		//General Events
+		//Chunk Change Event
+		Bukkit.getServer().getPluginManager().registerEvents(new PlayerChunkChangeEvt(), LargeSk.getPlugin());
+		
+		Skript.registerEvent("chunk change", SimpleEvent.class,
+		EvtPlayerChunkChange.class, new String[] { "chunk change" });
+		
+		//EvtPlayerViolation getPlayer()
+		EventValues.registerEventValue(EvtPlayerChunkChange.class,
+		Player.class, new Getter<Player, EvtPlayerChunkChange>() {
+			@Override
+			public Player get(
+					EvtPlayerChunkChange event) {
+				return event.getPlayer();
+			}
+		}, 0);
+		
+		//EvtPlayerViolation getFrom()
+				EventValues.registerEventValue(EvtPlayerChunkChange.class,
+				Chunk.class, new Getter<Chunk, EvtPlayerChunkChange>() {
+					@Override
+					public Chunk get(
+							EvtPlayerChunkChange event) {
+						return event.getFrom();
+					}
+				}, 0);
+				
+		//EvtPlayerViolation getTo()
+		EventValues.registerEventValue(EvtPlayerChunkChange.class,
+		Chunk.class, new Getter<Chunk, EvtPlayerChunkChange>() {
+			@Override
+			public Chunk get(
+					EvtPlayerChunkChange event) {
+				return event.getTo();
+			}
+		}, 0);
+		
 		//General Effects
 		Skript.registerEffect(EffDisableAllPlugins.class, "disable all plugins","disable every plugin");
 		
 		//AAC
-		if (Bukkit.getServer().getPluginManager().isPluginEnabled("AAC") && config.getConfigurationSection("enable").getBoolean("AAC"))
+		if (isPluginOnServer("AAC") && config.getConfigurationSection("enable").getBoolean("AAC"))
 		{
 			Xlog.logInfo("I have found AAC on your server. I'm pleased to announce we will work together from now.");
 			EnumClassInfo.create(HackType.class, "hacktype").register();
@@ -132,16 +179,25 @@ public class Register
 			}, 0);	
 		}
 		//SkinsRestorer
-		if (Bukkit.getServer().getPluginManager().isPluginEnabled("SkinsRestorer") && config.getConfigurationSection("enable").getBoolean("SkinsRestorer"))
+		if (isPluginOnServer("SkinsRestorer") && config.getConfigurationSection("enable").getBoolean("SkinsRestorer"))
 		{
 			Xlog.logInfo("SkinsRestorer has been detected! Registring conditions, expressions and other boring stuff..");
 			Skript.registerExpression(ExprSkinOfPlayer.class, String.class, ExpressionType.PROPERTY, "skin of %offlineplayer%","%offlineplayer%'s skin");
 			Skript.registerCondition(CondPlayerHasSkin.class, "%offlineplayer% (has|have) [a] skin");
 		}
 
+		//ProtocolLib
+		if (isPluginOnServer("ProtocolLib"))
+		{
+			Xlog.logInfo("Yeah, ProtocolLib! Let's go crazy..");
+			Skript.registerEffect(EffMakePlayersSleep.class, "(make|force) %player% sleep");
+		}
+		
 		//Metrics
 		if (config.getBoolean("enableMetrics"))
 		{
+			if (LargeSk.debug)
+				Xlog.logInfo("Trying to enable Metrics..");
 			try
 			{
 				Metrics metrics = new Metrics(LargeSk.getPlugin());
@@ -185,5 +241,12 @@ public class Register
 				}
 			}, 0);	
 		}
+	}
+	public boolean isPluginOnServer(String name)
+	{
+		Plugin pl = Bukkit.getServer().getPluginManager().getPlugin(name);
+		if (pl == null)
+			return false;
+		return true;
 	}
 }

@@ -31,7 +31,7 @@ public class ExprHack extends SimpleExpression<HackType>
 	@Override
 	public boolean init(Expression<?>[] expr, int arg1, Kleenean arg2, ParseResult arg3)
 	{
-		if (!ScriptLoader.isCurrentEvent(EvtPlayerViolation.class))
+		if ( ! ScriptLoader.isCurrentEvent(EvtPlayerViolation.class))
 		{
 			Skript.error("The hack expression can only be used inside Player Violation Event. Else you may want to use %hacktype%");
 			return false;
@@ -51,7 +51,7 @@ public class ExprHack extends SimpleExpression<HackType>
 	{
 		EvtPlayerViolation event = ((EvtPlayerViolation) e);
 		hack = event.getHack();
-		return HackType.values();
+		return new HackType[] { hack };
 	}
 
 }

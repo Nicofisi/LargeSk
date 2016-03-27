@@ -18,7 +18,8 @@ public class LargeSk extends JavaPlugin implements Listener {
 	
 	public static boolean debug = false;
     
-    public static LargeSk getPlugin() {
+    public static LargeSk getPlugin()
+    {
         return LargeSk.getPlugin(LargeSk.class);
     }
     
