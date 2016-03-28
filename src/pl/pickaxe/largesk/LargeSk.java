@@ -1,7 +1,5 @@
 package pl.pickaxe.largesk;
 
-import java.io.IOException;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
@@ -9,8 +7,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import ch.njol.skript.Skript;
 import pl.pickaxe.largesk.util.Xlog;
+import pl.pickaxe.largesk.register.Register;
 import pl.pickaxe.largesk.util.LargeConfig;
-import pl.pickaxe.largesk.util.Metrics;
+import pl.pickaxe.largesk.util.MetricsManager;
 import pl.pickaxe.largesk.util.SkAddons;
 import pl.pickaxe.largesk.util.Updater;
 
@@ -22,7 +21,12 @@ public class LargeSk extends JavaPlugin implements Listener {
     {
         return LargeSk.getPlugin(LargeSk.class);
     }
-    
+	//Construct
+	MetricsManager metricsmanager = new MetricsManager();
+	LargeConfig largeconfig = new LargeConfig();
+	Register register = new Register();
+	Updater updater = new Updater();
+	 
 	@Override
 	public void onEnable() {
 		
@@ -31,18 +35,19 @@ public class LargeSk extends JavaPlugin implements Listener {
 		Xlog.logInfo(ChatColor.YELLOW  + "=== ENABLE " + ChatColor.GREEN + "START" + ChatColor.YELLOW + " ===");
 		
 		//Config
-		LargeConfig conf = new LargeConfig();
-		conf.load();
+		largeconfig.load();
 		
 		//Registring Skript addon
 		Skript.registerAddon(this);
 		
 		//Register Skript's stuff
-		Register reg = new Register();
-		reg.registerAll();
+		register.registerAll();
 
 		//Register the command
 		this.getCommand("largesk").setExecutor(new LargeSkCommand());
+		
+		//Enable Metrics
+		metricsmanager.enableMetrics();
 		
 		//You see
 		Xlog.logInfo("Share your problems and ideas on https://github.com/Nicofisi/LargeSk/issues");
@@ -56,29 +61,16 @@ public class LargeSk extends JavaPlugin implements Listener {
 		Xlog.logInfo(ChatColor.YELLOW  + "=== ENABLE " + ChatColor.GREEN + "COMPLETE" + ChatColor.YELLOW + " (Took " + ChatColor.LIGHT_PURPLE + eTime + "ms" + ChatColor.YELLOW + ") ===");
 		
 		//Update check schedule
-		Updater updater = new Updater();
 		updater.scheduleUpdates();
 	}
 	
 	//On disable
 	@Override
 	public void onDisable() {
-		if (debug) Xlog.logInfo("Cancelling tasks..");
+		if (debug)
+			Xlog.logInfo("Cancelling tasks..");
 		Bukkit.getScheduler().cancelTasks(this);
-		
-		if (getConfig().getBoolean("enableMetrics"))
-		{
-			if (debug) Xlog.logInfo("Disabling Metrics..");
-			try {
-				Metrics metrics = new Metrics(this);
-				metrics.disable();
-			}
-			catch (IOException e)
-			{
-				Xlog.logWarning("Disabling Metrics failed ¯\\_(ツ)_/¯");
-				e.printStackTrace();
-			}
-		}
+		metricsmanager.disableMetrics();
 		Xlog.logInfo("Bye, Senpai!");
 	}
 }

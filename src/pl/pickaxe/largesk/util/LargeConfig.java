@@ -11,9 +11,11 @@ public class LargeConfig
 {
 	
 	public static File configf;
-    public static FileConfiguration config;
 	public static int lastestConfigVersion = 5;
 	Plugin lsk = LargeSk.getPlugin();
+	static LargeSk largesk = new LargeSk();
+	public static FileConfiguration config = largesk.getConfig();
+	
 	public void load()
 	{
 		//Configs
@@ -53,4 +55,8 @@ public class LargeConfig
 		
 	}
 	
+	public FileConfiguration getConfig()
+	{
+		return config;
+	}
 }
