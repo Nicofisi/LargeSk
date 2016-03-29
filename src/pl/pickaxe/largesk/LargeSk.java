@@ -15,7 +15,7 @@ import pl.pickaxe.largesk.util.Updater;
 
 public class LargeSk extends JavaPlugin implements Listener {
 	
-	public static boolean debug = true;
+	public static boolean debug = false;
     
     public static LargeSk getPluginInstance()
     {
