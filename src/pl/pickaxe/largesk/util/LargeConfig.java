@@ -12,9 +12,9 @@ public class LargeConfig
 	
 	public static File configf;
 	public static int lastestConfigVersion = 5;
-	Plugin lsk = LargeSk.getPlugin();
-	static LargeSk largesk = new LargeSk();
-	public static FileConfiguration config = largesk.getConfig();
+	static Plugin lsk = LargeSk.getPluginInstance();
+	LargeSk largesk = LargeSk.getPluginInstance();
+	public FileConfiguration config = largesk.getConfig();
 	
 	public void load()
 	{
@@ -53,6 +53,10 @@ public class LargeConfig
 	public void checkObjects()
 	{
 		
+	}
+	public static boolean getMetricsEnabled()
+	{
+		return lsk.getConfig().getBoolean("metricsEnabled");
 	}
 	
 	public FileConfiguration getConfig()

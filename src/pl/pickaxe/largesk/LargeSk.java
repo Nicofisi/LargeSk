@@ -15,20 +15,20 @@ import pl.pickaxe.largesk.util.Updater;
 
 public class LargeSk extends JavaPlugin implements Listener {
 	
-	public static boolean debug = false;
+	public static boolean debug = true;
     
-    public static LargeSk getPlugin()
+    public static LargeSk getPluginInstance()
     {
         return LargeSk.getPlugin(LargeSk.class);
     }
-	//Construct
-	MetricsManager metricsmanager = new MetricsManager();
-	LargeConfig largeconfig = new LargeConfig();
-	Register register = new Register();
-	Updater updater = new Updater();
 	 
 	@Override
 	public void onEnable() {
+		
+		//Construct
+		LargeConfig largeconfig = new LargeConfig();
+		Register register = new Register();
+		Updater updater = new Updater();
 		
 		//Enabling timer
 		long eTime = System.currentTimeMillis();
@@ -46,8 +46,16 @@ public class LargeSk extends JavaPlugin implements Listener {
 		//Register the command
 		this.getCommand("largesk").setExecutor(new LargeSkCommand());
 		
-		//Enable Metrics
-		metricsmanager.enableMetrics();
+		//Enable Metrics with 5 seconds delay
+		Bukkit.getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
+			
+			@Override
+			public void run()
+			{
+				MetricsManager metricsmanager = new MetricsManager();
+				metricsmanager.enableMetrics();
+			}
+		}, 100);
 		
 		//You see
 		Xlog.logInfo("Share your problems and ideas on https://github.com/Nicofisi/LargeSk/issues");
@@ -70,6 +78,7 @@ public class LargeSk extends JavaPlugin implements Listener {
 		if (debug)
 			Xlog.logInfo("Cancelling tasks..");
 		Bukkit.getScheduler().cancelTasks(this);
+		MetricsManager metricsmanager = new MetricsManager();
 		metricsmanager.disableMetrics();
 		Xlog.logInfo("Bye, Senpai!");
 	}

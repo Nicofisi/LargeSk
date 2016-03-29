@@ -20,7 +20,7 @@ public class Updater
 	
 	public void runUpdate()
 	{
-		Bukkit.getScheduler().runTaskAsynchronously(LargeSk.getPlugin(), new Runnable()
+		Bukkit.getScheduler().runTaskAsynchronously(LargeSk.getPluginInstance(), new Runnable()
 		{
 			@Override
 			public void run()
@@ -37,7 +37,7 @@ public class Updater
 				{
 					Xlog.logError(e.getCause().getMessage());
 				}
-				String currentVersion = LargeSk.getPlugin().getDescription().getVersion();
+				String currentVersion = LargeSk.getPluginInstance().getDescription().getVersion();
 				if ( ! currentVersion.equals(newVersion) || LargeSk.debug == true)
 				{
 					Xlog.logUpdater("LargeSk " + newVersion + " was released! You are using " + currentVersion + ".");
@@ -48,7 +48,7 @@ public class Updater
 					Xlog.logUpdater("It seems like your using the latest version of the plugin, I can't update it");
 					return;
 				}
-				File updated = new File(LargeSk.getPlugin().getDataFolder(), "LargeSk.jar");
+				File updated = new File(LargeSk.getPluginInstance().getDataFolder(), "LargeSk.jar");
 				try
 				{
 					FileUtils.copyURLToFile(new URL("https://github.com/Nicofisi/LargeSk/releases/download/" + newVersion + "/LargeSk.jar"), updated);
@@ -67,7 +67,7 @@ public class Updater
 				Updater updater = new Updater();
 				updater.removeOld();
 				
-				File moved = new File(LargeSk.getPlugin().getDataFolder(), "../LargeSk.jar");
+				File moved = new File(LargeSk.getPluginInstance().getDataFolder(), "../LargeSk.jar");
 				Xlog.logUpdater("Moving newest LargeSk.jar to plugins folder");
 				try
 				{
@@ -115,7 +115,7 @@ public class Updater
 	        Xlog.logError(e.getCause().getMessage());
 	    }
 	    String currentVersion;
-	   	currentVersion = LargeSk.getPlugin().getDescription().getVersion();
+	   	currentVersion = LargeSk.getPluginInstance().getDescription().getVersion();
 	    if ( ! Objects.equals(currentVersion, newVersion))
 	    {
 	    	if (updatedVersion == null)
@@ -145,15 +145,15 @@ public class Updater
 	}
 	public void scheduleUpdates()
 	{
-		if (LargeSk.getPlugin().getConfig().getConfigurationSection("updates").getBoolean("check"))
+		if (LargeSk.getPluginInstance().getConfig().getConfigurationSection("updates").getBoolean("check"))
 		{
-			Bukkit.getScheduler().runTaskTimerAsynchronously(LargeSk.getPlugin(), this::checkUpdates, 1L, LargeSk.getPlugin().getConfig().getConfigurationSection("updates").getInt("frequency")*1200L);
+			Bukkit.getScheduler().runTaskTimerAsynchronously(LargeSk.getPluginInstance(), this::checkUpdates, 1L, LargeSk.getPluginInstance().getConfig().getConfigurationSection("updates").getInt("frequency")*1200L);
 		}
 		else
 		{
 			Xlog.logInfo("Checking for updates is disabled in config, so I'll check it only once,");
 			Xlog.logInfo("And I won't disturb you anymore, okay?");
-			Bukkit.getScheduler().runTaskAsynchronously(LargeSk.getPlugin(), this::checkUpdates);
+			Bukkit.getScheduler().runTaskAsynchronously(LargeSk.getPluginInstance(), this::checkUpdates);
 		}
 	}
 }

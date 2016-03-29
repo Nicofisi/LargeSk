@@ -12,19 +12,19 @@ public class Xlog
 {
 	public static void logInfo(String msg)
 	{
-		Bukkit.getConsoleSender().sendMessage(ChatColor.BLUE + "[" + ChatColor.AQUA + LargeSk.getPlugin().getDescription().getName() + " " + LargeSk.getPlugin().getDescription().getVersion() + ChatColor.BLUE + "] " + ChatColor.RESET + msg);
+		Bukkit.getConsoleSender().sendMessage(ChatColor.BLUE + "[" + ChatColor.AQUA + LargeSk.getPluginInstance().getDescription().getName() + " " + LargeSk.getPluginInstance().getDescription().getVersion() + ChatColor.BLUE + "] " + ChatColor.RESET + msg);
 	}
 	public static void logWarning(String msg)
 	{
-		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_PURPLE + "[" + ChatColor.LIGHT_PURPLE + LargeSk.getPlugin().getDescription().getName() + " " + LargeSk.getPlugin().getDescription().getVersion() + ChatColor.LIGHT_PURPLE + " WARNING" + ChatColor.DARK_PURPLE + "] " + ChatColor.RESET + msg);
+		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_PURPLE + "[" + ChatColor.LIGHT_PURPLE + LargeSk.getPluginInstance().getDescription().getName() + " " + LargeSk.getPluginInstance().getDescription().getVersion() + ChatColor.LIGHT_PURPLE + " WARNING" + ChatColor.DARK_PURPLE + "] " + ChatColor.RESET + msg);
 	}
 	public static void logError(String msg)
 	{
-		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "[" + ChatColor.RED + LargeSk.getPlugin().getDescription().getName() + " " + LargeSk.getPlugin().getDescription().getVersion() + ChatColor.RED + "  ERROR" + ChatColor.DARK_RED + " ] " + ChatColor.RESET + msg);
+		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "[" + ChatColor.RED + LargeSk.getPluginInstance().getDescription().getName() + " " + LargeSk.getPluginInstance().getDescription().getVersion() + ChatColor.RED + "  ERROR" + ChatColor.DARK_RED + " ] " + ChatColor.RESET + msg);
 	}
 	public static void logUpdater(String msg)
 	{
-		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GREEN + "[" + ChatColor.GREEN + LargeSk.getPlugin().getDescription().getName() + " " + LargeSk.getPlugin().getDescription().getVersion() + ChatColor.GREEN + " UPDATER" + ChatColor.DARK_GREEN + "] " + ChatColor.RESET + msg);
+		Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GREEN + "[" + ChatColor.GREEN + LargeSk.getPluginInstance().getDescription().getName() + " " + LargeSk.getPluginInstance().getDescription().getVersion() + ChatColor.GREEN + " UPDATER" + ChatColor.DARK_GREEN + "] " + ChatColor.RESET + msg);
 	}
 	public static void logRaw(String msg)
 	{
@@ -32,7 +32,7 @@ public class Xlog
 	}
 	public static void logDefault(String msg)
 	{
-		Bukkit.getConsoleSender().sendMessage("[" + LargeSk.getPlugin().getName() + "] " + msg);
+		Bukkit.getConsoleSender().sendMessage("[" + LargeSk.getPluginInstance().getName() + "] " + msg);
 	}
 	public static void logBungeeInfo(String msg)
 	{

@@ -13,7 +13,7 @@ import pl.pickaxe.largesk.LargeSk;
 
 public class LargeMessenger implements PluginMessageListener
 {	
-	Plugin lsk = LargeSk.getPlugin();
+	Plugin lsk = LargeSk.getPluginInstance();
 	Server srv = Bukkit.getServer();
 	
 	public LargeMessenger getMessenger()

@@ -20,7 +20,7 @@ public class Events {
 	public void registerGeneral()
 	{
 		//Chunk Change Event
-		Bukkit.getServer().getPluginManager().registerEvents(new PlayerChunkChangeEvt(), LargeSk.getPlugin());
+		Bukkit.getServer().getPluginManager().registerEvents(new PlayerChunkChangeEvt(), LargeSk.getPluginInstance());
 		
 		Skript.registerEvent("chunk change", SimpleEvent.class,
 		EvtPlayerChunkChange.class, new String[] { "chunk change" });
@@ -59,7 +59,7 @@ public class Events {
 	public void registerAAC()
 	{
 		//Register Events
-		Bukkit.getServer().getPluginManager().registerEvents(new PlayerViolationEvt(), LargeSk.getPlugin());
+		Bukkit.getServer().getPluginManager().registerEvents(new PlayerViolationEvt(), LargeSk.getPluginInstance());
 		
 		//Register EvtPlayerViolation to Skript
 		Skript.registerEvent("Player Violation", SimpleEvent.class,

@@ -59,6 +59,6 @@ public class EffSendPluginMessage extends Effect
 			Skript.error("You can't send proxy messages when there are no players online.");
 			return;
 		}
-		pl.sendPluginMessage(LargeSk.getPlugin(), "BungeeCord", out.toByteArray());
+		pl.sendPluginMessage(LargeSk.getPluginInstance(), "BungeeCord", out.toByteArray());
 	}
 }

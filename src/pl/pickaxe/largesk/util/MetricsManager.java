@@ -2,54 +2,42 @@ package pl.pickaxe.largesk.util;
 
 import java.io.IOException;
 
-import org.bukkit.configuration.file.FileConfiguration;
-
+import ch.njol.skript.Skript;
 import pl.pickaxe.largesk.LargeSk;
 
 public class MetricsManager
 {
-	LargeConfig lc = new LargeConfig();
-	FileConfiguration config = lc.getConfig();
 	
 	public void enableMetrics()
 	{
-		
-		//Metrics
-		if (LargeSk.getPlugin().getConfig().getBoolean("enableMetrics"))
+		if (LargeSk.debug)
+			Xlog.logInfo("Trying to enable Metrics..");
+		try
 		{
-			if (LargeSk.debug)
-				Xlog.logInfo("Trying to enable Metrics..");
-			try
-			{
-				Metrics metrics = new Metrics(LargeSk.getPlugin());
-				metrics.start();
-			}
-			catch (IOException e)
-			{
-				Xlog.logWarning("Enabling Metrics failed ¯\\_(ツ)_/¯");
-				e.printStackTrace();
-			}
+			Metrics metrics = new Metrics(LargeSk.getPluginInstance());
+			metrics.start();
 		}
-		else
+		catch (IOException e)
 		{
-			Xlog.logInfo("You have disabled Metrics, sorry to hear that but it's not my problem ¯\\_(ツ)_/¯");
-		}		
-	}
+			Xlog.logWarning("Enabling Metrics failed ¯\\_(ツ)_/¯");
+			e.printStackTrace();
+		}
+	}	
+
 	public void disableMetrics()
 	{
-		if (config.getBoolean("enableMetrics"))
+		if (LargeSk.debug)
+			Xlog.logInfo("Disabling Metrics..");
+		try
 		{
-			if (LargeSk.debug)
-				Xlog.logInfo("Disabling Metrics..");
-			try {
-				Metrics metrics = new Metrics(LargeSk.getPlugin());
-				metrics.disable();
-			}
-			catch (IOException e)
-			{
-				Xlog.logWarning("Disabling Metrics failed ¯\\_(ツ)_/¯");
-				e.printStackTrace();
-			}
+			Metrics metrics = new Metrics(Skript.getInstance());
+			metrics.disable();
 		}
+		catch (IOException e)
+		{
+			Xlog.logWarning("Disabling Metrics failed ¯\\_(ツ)_/¯");
+			e.printStackTrace();
+		}
+	
 	}
 }
