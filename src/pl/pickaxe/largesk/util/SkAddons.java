@@ -1,4 +1,7 @@
 package pl.pickaxe.largesk.util;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
 
@@ -12,6 +15,14 @@ public class SkAddons
 		{
 			num++;
 			list = list + addon.getName() + ", ";
+		}
+		
+		//Cuz Umbaska is strange
+		Plugin skumb = Bukkit.getServer().getPluginManager().getPlugin("Umbaska");
+		if (skumb != null)
+		{
+			num++;
+			list = list + skumb.getName() + ", ";
 		}
 		
 		list = list.substring(0, list.length() - 2);

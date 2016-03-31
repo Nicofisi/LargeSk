@@ -2,6 +2,7 @@ package pl.pickaxe.largesk.register;
 
 import org.bukkit.Chunk;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.ExpressionType;
@@ -12,6 +13,10 @@ import pl.pickaxe.largesk.aac.ExprHack;
 import pl.pickaxe.largesk.aac.ExprHackDescription;
 import pl.pickaxe.largesk.aac.ExprViolationLevel;
 import pl.pickaxe.largesk.effects.EffLagServer;
+import pl.pickaxe.largesk.expressions.ExprPlayersFlying;
+import pl.pickaxe.largesk.expressions.ExprPlayersInWorld;
+import pl.pickaxe.largesk.expressions.ExprPlayersInsideVehicle;
+import pl.pickaxe.largesk.expressions.ExprPlayersSleeping;
 import pl.pickaxe.largesk.expressions.ExprFullTime;
 import pl.pickaxe.largesk.expressions.ExprLinkAsk;
 import pl.pickaxe.largesk.expressions.ExprLinkBing;
@@ -20,10 +25,13 @@ import pl.pickaxe.largesk.expressions.ExprLinkGoogle;
 import pl.pickaxe.largesk.expressions.ExprNewChunk;
 import pl.pickaxe.largesk.expressions.ExprOldChunk;
 import pl.pickaxe.largesk.expressions.ExprPastebin;
+import pl.pickaxe.largesk.expressions.ExprPlayersWithPermission;
+import pl.pickaxe.largesk.expressions.ExprPlayersSneaking;
 import pl.pickaxe.largesk.expressions.ExprUrlDecode;
 import pl.pickaxe.largesk.expressions.ExprUrlEncode;
 import pl.pickaxe.largesk.skinsrestorer.ExprSkinOfPlayer;
 import pl.pickaxe.largesk.util.LargeConfig;
+import pl.pickaxe.largesk.viaversion.ExprMinecraftVersion;
 
 public class Expressions {
 	
@@ -42,6 +50,12 @@ public class Expressions {
 		Skript.registerExpression(ExprUrlDecode.class, String.class, ExpressionType.SIMPLE, "url decoded %string%");
 		Skript.registerExpression(ExprNewChunk.class, Chunk.class, ExpressionType.SIMPLE, "new chunk");
 		Skript.registerExpression(ExprOldChunk.class, Chunk.class, ExpressionType.SIMPLE, "old chunk");
+		Skript.registerExpression(ExprPlayersWithPermission.class, Player.class, ExpressionType.SIMPLE, "%players% with perm[ission[[ ]node]] %string%");
+		Skript.registerExpression(ExprPlayersFlying.class, Player.class, ExpressionType.SIMPLE, "%players% flying","flying %players%");
+		Skript.registerExpression(ExprPlayersSneaking.class, Player.class, ExpressionType.SIMPLE, "%players% sneaking","sneaking %players%");
+		Skript.registerExpression(ExprPlayersSleeping.class, Player.class, ExpressionType.SIMPLE, "%players% sleeping","sleeping %players%");
+		Skript.registerExpression(ExprPlayersInsideVehicle.class, Player.class, ExpressionType.SIMPLE, "%players% [(driving|riding)] (in[side]|on) [a] vehicle[s]");
+		Skript.registerExpression(ExprPlayersInWorld.class, Player.class, ExpressionType.SIMPLE, "%players% in world %world%");
 		
 		//Lag expression disable check
 		if (config.getConfigurationSection("enable").getBoolean("lag"))
@@ -62,5 +76,9 @@ public class Expressions {
 	public void registerSkinsRestorer()
 	{
 		Skript.registerExpression(ExprSkinOfPlayer.class, String.class, ExpressionType.PROPERTY, "skin of %offlineplayer%","%offlineplayer%'s skin");
+	}
+	public void registerViaVersion()
+	{
+		Skript.registerExpression(ExprMinecraftVersion.class, Integer.class, ExpressionType.SIMPLE, "(protocol|(mc|minecraft)) ver[sion] of %player%","%player%'s (protocol|(mc|minecraft)) ver[sion]");
 	}
 }

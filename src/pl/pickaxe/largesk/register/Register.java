@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
+import ch.njol.skript.Skript;
 import me.konsolas.aac.api.HackType;
 import pl.pickaxe.largesk.LargeSk;
 import pl.pickaxe.largesk.util.EnumClassInfo;
@@ -17,6 +18,14 @@ public class Register
 	
 	public void registerAll()
 	{
+		if ( ! Skript.isAcceptRegistrations())
+		{
+			Xlog.logError("Oh no! Skript isn't accepting registrations for some reason.");
+			Xlog.logError("Maybe you reloaded the server, or did something another that is unusual?");
+			Xlog.logError("Most probably none of LargeSk's expressions, effects etc. will work.");
+			return;
+		}
+		
 		//Construct
 		Expressions expressions = new Expressions();
 		Conditions conditions = new Conditions();
@@ -54,11 +63,16 @@ public class Register
 			Xlog.logInfo("Yeah, ProtocolLib! Let's go crazy..");
 			effects.registerProtocolLib();
 		}
-		
 		//BungeeCord
 		if (config.getConfigurationSection("bungee").getBoolean("use"))
 		{
 			bungee.registerAll();
+		}
+		//ViaVersion
+		if (isPluginOnServer("ViaVersion"))
+		{
+			Xlog.logInfo("ViaVersion is here. Your server must be professional.");
+			expressions.registerViaVersion();
 		}
 	}
 	public boolean isPluginOnServer(String name)

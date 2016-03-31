@@ -2,7 +2,6 @@ package pl.pickaxe.largesk;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import ch.njol.skript.Skript;
@@ -13,7 +12,7 @@ import pl.pickaxe.largesk.util.MetricsManager;
 import pl.pickaxe.largesk.util.SkAddons;
 import pl.pickaxe.largesk.util.Updater;
 
-public class LargeSk extends JavaPlugin implements Listener {
+public class LargeSk extends JavaPlugin {
 	
 	public static boolean debug = false;
     

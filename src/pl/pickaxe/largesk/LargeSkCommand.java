@@ -33,8 +33,8 @@ public class LargeSkCommand implements CommandExecutor {
 				sender.sendMessage(ChatColor.GRAY + "[LargeSk]> " + ChatColor.YELLOW + "An Addon for Skript");
 				sender.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "/lsk info" + ChatColor.GRAY + " - version, author etc.");
 				sender.sendMessage(ChatColor.YELLOW + "/lsk check" + ChatColor.GRAY + " - check for updates");
-				sender.sendMessage(ChatColor.YELLOW + "/lsk update" + ChatColor.GRAY + " - not implemented yet");
-				sender.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "/lsk reload" + ChatColor.GRAY + " - reloads config");
+				sender.sendMessage(ChatColor.YELLOW + "/lsk update" + ChatColor.GRAY + " - very handy argument");
+				sender.sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC + "/lsk reload" + ChatColor.GRAY + " - reload config");
 				sender.sendMessage(ChatColor.YELLOW + "/lsk debug" + ChatColor.GRAY + " - debug info for the developer");
 			}
 			return true;
