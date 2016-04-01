@@ -4,6 +4,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
@@ -25,8 +26,8 @@ public class CondPlayerHasSkin extends Condition {
 	}
 
 	@Override
-	public String toString(@Nullable Event arg0, boolean arg1) {
-		return "player has skin";
+	public String toString(@Nullable Event e, boolean arg1) {
+		return p.getSingle(e).toString() + " has skin";
 	}
 
 	@Override
@@ -37,5 +38,9 @@ public class CondPlayerHasSkin extends Condition {
 			return false;
 		}
 	}
-	
+	public static void register()
+	{
+		Skript.registerCondition(CondPlayerHasSkin.class,
+				"%offlineplayer% (has|have) [a] skin");
+	}
 }

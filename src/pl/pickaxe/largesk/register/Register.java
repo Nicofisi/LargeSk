@@ -56,7 +56,6 @@ public class Register
 			expressions.registerSkinsRestorer();
 			conditions.registerSkinsRestorer();
 		}
-
 		//ProtocolLib
 		if (isPluginOnServer("ProtocolLib") && LargeSk.debug)
 		{

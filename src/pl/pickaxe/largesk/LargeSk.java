@@ -5,6 +5,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.lang.Condition;
+import ch.njol.skript.lang.SyntaxElementInfo;
 import pl.pickaxe.largesk.util.Xlog;
 import pl.pickaxe.largesk.register.Register;
 import pl.pickaxe.largesk.util.LargeConfig;
@@ -14,7 +16,7 @@ import pl.pickaxe.largesk.util.Updater;
 
 public class LargeSk extends JavaPlugin {
 	
-	public static boolean debug = false;
+	public static boolean debug = true;
     
     public static LargeSk getPluginInstance()
     {
@@ -62,6 +64,19 @@ public class LargeSk extends JavaPlugin {
 		//Also obvious
 		Bukkit.getScheduler().runTaskAsynchronously(this, SkAddons::logAddons);
 		Xlog.logInfo("I will show you a list of your Skript addons as soon as everything loads up.");
+		
+		//Debug
+		if (debug)
+		{
+			for (SyntaxElementInfo<? extends Condition> cond : Skript.getConditions())
+			{
+				Xlog.logInfo("");
+				for (String pat : cond.patterns)
+				{
+					Xlog.logInfo(pat);
+				}
+			}
+		}
 		
 		//Announcing how much time enabling took
 		eTime = System.currentTimeMillis() - eTime;

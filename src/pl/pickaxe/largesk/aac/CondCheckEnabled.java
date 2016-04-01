@@ -3,6 +3,7 @@ package pl.pickaxe.largesk.aac;
 import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
@@ -16,14 +17,14 @@ public class CondCheckEnabled extends Condition {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean init(Expression<?>[] e, int arg1, Kleenean arg2, ParseResult arg3) {
-		hack = (Expression<HackType>) e[0];
+	public boolean init(Expression<?>[] expr, int arg1, Kleenean arg2, ParseResult arg3) {
+		hack = (Expression<HackType>) expr[0];
 		return true;
 	}
 
 	@Override
-	public String toString(@Nullable Event arg0, boolean arg1) {
-		return "aac check enabled";
+	public String toString(@Nullable Event e, boolean arg1) {
+		return "hack check " + hack.getSingle(e).toString() + " is enabled";
 	}
 
 	@Override
@@ -38,5 +39,10 @@ public class CondCheckEnabled extends Condition {
 			return false;
 		}
 	}
-
+	
+	public static void register()
+	{
+		Skript.registerCondition(CondCheckEnabled.class,
+				"[aac] (check %-hacktype%|%-hacktype% check) is (enabled|on|running)");
+	}
 }
