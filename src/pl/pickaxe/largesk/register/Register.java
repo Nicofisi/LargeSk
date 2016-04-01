@@ -74,6 +74,12 @@ public class Register
 			Xlog.logInfo("ViaVersion is here. Your server must be professional.");
 			expressions.registerViaVersion();
 		}
+		//NetworkCoins
+		if (isPluginOnServer("NetworkCoins"))
+		{
+			Xlog.logInfo("Hooking into NetworkCoins now.");
+			expressions.registerNetworkCoins();
+		}
 	}
 	public boolean isPluginOnServer(String name)
 	{

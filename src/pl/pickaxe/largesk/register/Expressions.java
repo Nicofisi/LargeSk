@@ -29,6 +29,7 @@ import pl.pickaxe.largesk.expressions.ExprPlayersWithPermission;
 import pl.pickaxe.largesk.expressions.ExprPlayersSneaking;
 import pl.pickaxe.largesk.expressions.ExprUrlDecode;
 import pl.pickaxe.largesk.expressions.ExprUrlEncode;
+import pl.pickaxe.largesk.networkcoins.ExprNetworkCoins;
 import pl.pickaxe.largesk.skinsrestorer.ExprSkinOfPlayer;
 import pl.pickaxe.largesk.util.LargeConfig;
 import pl.pickaxe.largesk.viaversion.ExprMinecraftVersion;
@@ -80,5 +81,9 @@ public class Expressions {
 	public void registerViaVersion()
 	{
 		Skript.registerExpression(ExprMinecraftVersion.class, Integer.class, ExpressionType.SIMPLE, "(protocol|(mc|minecraft)) ver[sion] of %player%","%player%'s (protocol|(mc|minecraft)) ver[sion]");
+	}
+	public void registerNetworkCoins()
+	{
+		Skript.registerExpression(ExprNetworkCoins.class, Integer.class, ExpressionType.SIMPLE, "network coin[s] of %offlineplayer%","%offlineplayer%'s network coins");
 	}
 }
