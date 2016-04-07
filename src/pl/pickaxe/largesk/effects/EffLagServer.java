@@ -31,15 +31,11 @@ public class EffLagServer extends Effect
 	protected void execute(Event e)
 	{
 		int something = 2;
-		Long start = System.currentTimeMillis();
-		@SuppressWarnings("deprecation")
-		Long stop = System.currentTimeMillis() + (time.getSingle(e).getTicks() * 50);
-		do
-		{
-			something++;
-			something--;
+		try {
+			Thread.sleep(time.getSingle(e).getMilliSeconds());
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
 		}
-		while (stop > System.currentTimeMillis());
 	}
 
 }

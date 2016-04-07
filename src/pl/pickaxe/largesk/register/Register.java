@@ -79,12 +79,19 @@ public class Register
 			Xlog.logInfo("Hooking into NetworkCoins now.");
 			expressions.registerNetworkCoins();
 		}
+		//Umbaska
+		if (isPluginOnServer("Umbaska") && LargeSk.debug)
+		{
+			Xlog.logInfo("Hooking into updater of Umbaska");
+			effects.registerUmbaska();
+		}
 	}
-	public boolean isPluginOnServer(String name)
+	public static boolean isPluginOnServer(String name)
 	{
 		Plugin pl = Bukkit.getServer().getPluginManager().getPlugin(name);
 		if (pl == null)
 			return false;
 		return true;
+		
 	}
 }

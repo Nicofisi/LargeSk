@@ -1,8 +1,12 @@
 package pl.pickaxe.largesk.register;
 
+import java.util.ArrayList;
+import java.util.logging.Logger;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.util.SimpleEvent;
@@ -10,20 +14,48 @@ import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import me.konsolas.aac.api.HackType;
 import pl.pickaxe.largesk.LargeSk;
+import pl.pickaxe.largesk.events.EvtConsoleLog;
 import pl.pickaxe.largesk.events.EvtPlayerChunkChange;
 import pl.pickaxe.largesk.events.EvtPlayerViolation;
 import pl.pickaxe.largesk.events.PlayerChunkChangeEvt;
 import pl.pickaxe.largesk.events.PlayerViolationEvt;
+import pl.pickaxe.largesk.util.ConsoleFilter;
 
 public class Events {
 	
 	public void registerGeneral()
 	{
+		//Console Log Event
+		ArrayList<Logger> loggers = new ArrayList<Logger>();
+		loggers.add(Bukkit.getLogger());
+		for (Plugin pl : Bukkit.getPluginManager().getPlugins())
+		{
+			loggers.add(pl.getLogger());	
+		}
+		
+		for (Logger lg : loggers)
+		{
+			lg.setFilter(new ConsoleFilter());
+		}
+		
+		Skript.registerEvent("console log", SimpleEvent.class
+				, EvtConsoleLog.class, new String[] { "[console] log[ging]" });
+		
+		//EvtConsoleLog getMessage()
+		EventValues.registerEventValue(EvtConsoleLog.class,
+		String.class, new Getter<String, EvtConsoleLog>() {
+			@Override
+			public String get(
+					EvtConsoleLog event) {
+				return event.getMessage();
+			}
+		}, 0);
+		
 		//Chunk Change Event
 		Bukkit.getServer().getPluginManager().registerEvents(new PlayerChunkChangeEvt(), LargeSk.getPluginInstance());
 		
 		Skript.registerEvent("chunk change", SimpleEvent.class,
-		EvtPlayerChunkChange.class, new String[] { "chunk change" });
+				EvtPlayerChunkChange.class, new String[] { "chunk change" });
 		
 		//EvtPlayerViolation getPlayer()
 		EventValues.registerEventValue(EvtPlayerChunkChange.class,
@@ -63,7 +95,7 @@ public class Events {
 		
 		//Register EvtPlayerViolation to Skript
 		Skript.registerEvent("Player Violation", SimpleEvent.class,
-		EvtPlayerViolation.class, new String[] { "violation","hack","cheat" });
+				EvtPlayerViolation.class, new String[] { "violation","hack","cheat" });
 		
 		//EvtPlayerViolation getPlayer()
 		EventValues.registerEventValue(EvtPlayerViolation.class,

@@ -6,12 +6,15 @@ import pl.pickaxe.largesk.aac.EffEnableCheck;
 import pl.pickaxe.largesk.aac.EffReloadAAC;
 import pl.pickaxe.largesk.aac.EffReloadPermissionCache;
 import pl.pickaxe.largesk.effects.EffDisableAllPlugins;
+import pl.pickaxe.largesk.effects.EffDisableUmbaskaUpdater;
+import pl.pickaxe.largesk.effects.EffThrowNPE;
 import pl.pickaxe.largesk.protocollib.EffMakePlayersSleep;
 
 public class Effects {
 	public void registerGeneral()
 	{
 		Skript.registerEffect(EffDisableAllPlugins.class, "disable all plugins","disable every plugin");
+		EffThrowNPE.register();
 	}
 	public void registerAAC()
 	{
@@ -23,5 +26,9 @@ public class Effects {
 	public void registerProtocolLib()
 	{
 		Skript.registerEffect(EffMakePlayersSleep.class, "(make|force) %player% sleep");
+	}
+	public void registerUmbaska()
+	{
+		EffDisableUmbaskaUpdater.register();
 	}
 }
