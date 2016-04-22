@@ -15,38 +15,38 @@ import ch.njol.util.StringUtils;
 
 public class EffReplaceFirst extends Effect {
 
-	private Expression<String> haystack, needles, replacement;
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
-		haystack = (Expression<String>) exprs[1 + matchedPattern];
-		if (!ChangerUtils.acceptsChange(haystack, ChangeMode.SET, String.class)) {
-			Skript.error(haystack + " cannot be changed and can thus not have parts replaced.");
-			return false;
-		}
-		needles = (Expression<String>) exprs[0];
-		replacement = (Expression<String>) exprs[2 - matchedPattern];
-		return true;
-	}
+  private Expression<String> haystack, needles, replacement;
 
-	@Override
-	public String toString(@Nullable Event arg0, boolean arg1) {
-		return null;
-	}
+  @SuppressWarnings("unchecked")
+  @Override
+  public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
+    haystack = (Expression<String>) exprs[1 + matchedPattern];
+    if (!ChangerUtils.acceptsChange(haystack, ChangeMode.SET, String.class)) {
+      Skript.error(haystack + " cannot be changed and can thus not have parts replaced.");
+      return false;
+    }
+    needles = (Expression<String>) exprs[0];
+    replacement = (Expression<String>) exprs[2 - matchedPattern];
+    return true;
+  }
 
-	@Override
-	protected void execute(Event e) {
-		String h = haystack.getSingle(e);
-		final String[] ns = needles.getAll(e);
-		final String r = replacement.getSingle(e);
-		if (h == null || ns.length == 0 || r == null)
-			return;
-		for (final String n : ns) {
-			assert n != null;
-			h = StringUtils.replace(h, n, r, SkriptConfig.caseSensitive.value());
-		}
-		haystack.change(e, new String[] {h}, ChangeMode.SET);
-	}
+  @Override
+  public String toString(@Nullable Event arg0, boolean arg1) {
+    return null;
+  }
+
+  @Override
+  protected void execute(Event e) {
+    String h = haystack.getSingle(e);
+    final String[] ns = needles.getAll(e);
+    final String r = replacement.getSingle(e);
+    if (h == null || ns.length == 0 || r == null)
+      return;
+    for (final String n : ns) {
+      assert n != null;
+      h = StringUtils.replace(h, n, r, SkriptConfig.caseSensitive.value());
+    }
+    haystack.change(e, new String[] { h }, ChangeMode.SET);
+  }
 
 }

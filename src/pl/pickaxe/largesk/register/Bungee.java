@@ -19,7 +19,7 @@ public class Bungee {
     msg.getMessenger().registerMessenger();
 
     // Effect
-    Skript.registerEffect(EffSendPluginMessage.class, "proxy send %string% [to %-string%]");
+    EffSendPluginMessage.register();
 
     // The PluginMessageReceived Event
     Skript.registerEvent("Message Receive", SimpleEvent.class, EvtPluginMessageReceived.class,

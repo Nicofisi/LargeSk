@@ -3,6 +3,7 @@ package pl.pickaxe.largesk.aac;
 import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
@@ -28,4 +29,8 @@ public class EffReloadAAC extends Effect {
 		}
 	}
 
+	public static void register() {
+	  Skript.registerEffect(EffReloadAAC.class, "aac reload [config[s]]", "reload aac [config[s]]",
+	        "reload config[s] of aac");
+	}
 }

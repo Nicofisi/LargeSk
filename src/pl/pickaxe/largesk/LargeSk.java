@@ -77,8 +77,8 @@ public class LargeSk extends JavaPlugin {
 
     // Announcing how much time enabling took
     eTime = System.currentTimeMillis() - eTime;
-    Xlog.logInfo(ChatColor.YELLOW + "=== ENABLE " + ChatColor.GREEN + "COMPLETE" + ChatColor.YELLOW + " (Took "
-        + ChatColor.LIGHT_PURPLE + eTime + "ms" + ChatColor.YELLOW + ") ===");
+    Xlog.logInfo(ChatColor.YELLOW + "=== ENABLE " + ChatColor.GREEN + "COMPLETE" + ChatColor.YELLOW
+        + " (Took " + ChatColor.LIGHT_PURPLE + eTime + "ms" + ChatColor.YELLOW + ") ===");
 
     // Update check schedule
     updater.scheduleUpdates();

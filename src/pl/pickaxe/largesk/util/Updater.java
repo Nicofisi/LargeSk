@@ -27,8 +27,9 @@ public class Updater {
             Xlog.logUpdater("Checking for updates..");
             String newVersion = "";
             try {
-              BufferedReader in = new BufferedReader(new InputStreamReader(
-                  new URL("https://raw.githubusercontent.com/Nicofisi/LargeSk/master/lastest.version").openStream()));
+              BufferedReader in = new BufferedReader(new InputStreamReader(new URL(
+                  "https://raw.githubusercontent.com/Nicofisi/LargeSk/master/lastest.version")
+                      .openStream()));
               newVersion = in.readLine();
               in.close();
             } catch (Exception e) {
@@ -36,17 +37,19 @@ public class Updater {
             }
             String currentVersion = LargeSk.getPluginInstance().getDescription().getVersion();
             if (!currentVersion.equals(newVersion) || LargeSk.debug == true) {
-              Xlog.logUpdater("LargeSk " + newVersion + " was released! You are using " + currentVersion + ".");
+              Xlog.logUpdater(
+                  "LargeSk " + newVersion + " was released! You are using " + currentVersion + ".");
               Xlog.logUpdater("Downloading.. I need more updatezzz");
             } else {
-              Xlog.logUpdater("It seems like your using the latest version of the plugin, I can't update it");
+              Xlog.logUpdater(
+                  "It seems like your using the latest version of the plugin, I can't update it");
               return;
             }
             File updated = new File(LargeSk.getPluginInstance().getDataFolder(), "LargeSk.jar");
             try {
-              FileUtils.copyURLToFile(
-                  new URL("https://github.com/Nicofisi/LargeSk/releases/download/" + newVersion + "/LargeSk.jar"),
-                  updated);
+              FileUtils
+                  .copyURLToFile(new URL("https://github.com/Nicofisi/LargeSk/releases/download/"
+                      + newVersion + "/LargeSk.jar"), updated);
             } catch (IOException e) {
               e.printStackTrace();
             }
@@ -64,7 +67,8 @@ public class Updater {
             try {
               Files.move(updated.toPath(), moved.toPath(), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
-              Xlog.logUpdater("An error has occured while attempting to move downloaded jar to the plugins folder.");
+              Xlog.logUpdater(
+                  "An error has occured while attempting to move downloaded jar to the plugins folder.");
               e.printStackTrace();
             }
             if (!moved.exists()) {
@@ -81,7 +85,8 @@ public class Updater {
   }
 
   public void removeOld() {
-    File oldJar = new java.io.File(LargeSk.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+    File oldJar = new java.io.File(
+        LargeSk.class.getProtectionDomain().getCodeSource().getLocation().getFile());
     oldJar.delete();
     Xlog.logUpdater("Removed old plugin version");
   }
@@ -91,45 +96,50 @@ public class Updater {
     return new Runnable() {
       @Override
       public void run() {
-    Xlog.logUpdater("Checking for updates..");
-    String newVersion = "";
-    try {
-      BufferedReader in = new BufferedReader(new InputStreamReader(
-          new URL("https://raw.githubusercontent.com/Nicofisi/LargeSk/master/lastest.version").openStream()));
-      newVersion = in.readLine();
-      in.close();
-    } catch (Exception e) {
-      Xlog.logError(e.getCause().getMessage());
-    }
-    String currentVersion;
-    currentVersion = LargeSk.getPluginInstance().getDescription().getVersion();
-    if (!Objects.equals(currentVersion, newVersion)) {
-      if (updatedVersion == null) {
-        Xlog.logUpdater("LargeSk " + newVersion + " was released! You are using " + currentVersion + ".");
-        Xlog.logUpdater("To download the update, just use /lsk update");
-      } else {
-        Xlog.logUpdater("New version of LargeSk, " + newVersion + ", was found.");
-        Xlog.logUpdater(
-            "I know you downloaded an update in this session already, but the developer published even cooler one");
-        Xlog.logUpdater("Currently " + currentVersion + "is enabled, and " + updatedVersion + " is downloaded");
-        Xlog.logUpdater("Use the command /lsk update again!");
+        Xlog.logUpdater("Checking for updates..");
+        String newVersion = "";
+        try {
+          BufferedReader in = new BufferedReader(new InputStreamReader(
+              new URL("https://raw.githubusercontent.com/Nicofisi/LargeSk/master/lastest.version")
+                  .openStream()));
+          newVersion = in.readLine();
+          in.close();
+        } catch (Exception e) {
+          Xlog.logError(e.getCause().getMessage());
+        }
+        String currentVersion;
+        currentVersion = LargeSk.getPluginInstance().getDescription().getVersion();
+        if (!Objects.equals(currentVersion, newVersion)) {
+          if (updatedVersion == null) {
+            Xlog.logUpdater(
+                "LargeSk " + newVersion + " was released! You are using " + currentVersion + ".");
+            Xlog.logUpdater("To download the update, just use /lsk update");
+          } else {
+            Xlog.logUpdater("New version of LargeSk, " + newVersion + ", was found.");
+            Xlog.logUpdater(
+                "I know you downloaded an update in this session already, but the developer published even cooler one");
+            Xlog.logUpdater("Currently " + currentVersion + "is enabled, and " + updatedVersion
+                + " is downloaded");
+            Xlog.logUpdater("Use the command /lsk update again!");
+          }
+        } else {
+          if (updatedVersion == null) {
+            Xlog.logUpdater("It seems like your using the latest version of the plugin.");
+          } else {
+            Xlog.logUpdater(
+                "The version of plugin you downloaded is the lastest one (but is still awaiting for a server restart)");
+          }
+        }
       }
-    } else {
-      if (updatedVersion == null) {
-        Xlog.logUpdater("It seems like your using the latest version of the plugin.");
-      } else {
-        Xlog.logUpdater(
-            "The version of plugin you downloaded is the lastest one (but is still awaiting for a server restart)");
-      }
-    }
-    }
     };
   }
 
   public void scheduleUpdates() {
-    if (LargeSk.getPluginInstance().getConfig().getConfigurationSection("updates").getBoolean("check")) {
-      Bukkit.getScheduler().runTaskTimerAsynchronously(LargeSk.getPluginInstance(), this.runUpdate(), 1L,
-          LargeSk.getPluginInstance().getConfig().getConfigurationSection("updates").getInt("frequency") * 1200L);
+    if (LargeSk.getPluginInstance().getConfig().getConfigurationSection("updates")
+        .getBoolean("check")) {
+      Bukkit.getScheduler().runTaskTimerAsynchronously(LargeSk.getPluginInstance(),
+          this.runUpdate(), 1L, LargeSk.getPluginInstance().getConfig()
+              .getConfigurationSection("updates").getInt("frequency") * 1200L);
     } else {
       Xlog.logInfo("Checking for updates is disabled in config, so I'll check it only once,");
       Xlog.logInfo("And I won't disturb you anymore, okay?");

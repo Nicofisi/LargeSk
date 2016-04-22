@@ -3,7 +3,7 @@ package pl.pickaxe.largesk.expressions;
 import org.bukkit.event.Event;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.net.URLDecoder;
 
 import javax.annotation.Nullable;
 
@@ -14,7 +14,7 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 
-public class ExprLinkBing extends SimpleExpression<String> {
+public class ExprUrlDecodedText extends SimpleExpression<String> {
   private Expression<String> search;
 
   @Override
@@ -43,8 +43,7 @@ public class ExprLinkBing extends SimpleExpression<String> {
   @Nullable
   protected String[] get(Event e) {
     try {
-      return new String[] {
-          "https://www.google.com/search?q=" + URLEncoder.encode(search.getSingle(e).toString(), "UTF-8") };
+      return new String[] { URLDecoder.decode(search.getSingle(e).toString(), "UTF-8") };
     } catch (UnsupportedEncodingException e1) {
       e1.printStackTrace();
       return null;
@@ -52,7 +51,6 @@ public class ExprLinkBing extends SimpleExpression<String> {
   }
 
   public static void register() {
-    Skript.registerExpression(ExprLinkBing.class, String.class, ExpressionType.SIMPLE,
-        "bing link (of|to) [search] %string%");
+    Skript.registerExpression(ExprUrlDecodedText.class, String.class, ExpressionType.SIMPLE, "url decoded %string%");
   }
 }

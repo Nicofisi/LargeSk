@@ -30,7 +30,8 @@ public class SkAddons {
         if (num > 1) {
           Xlog.logInfo("You are using " + num + " addons for Skript. A list of them: " + list);
         } else {
-          Xlog.logInfo("You are using only " + num + " addon for Skript. And the name of it is " + list);
+          Xlog.logInfo(
+              "You are using only " + num + " addon for Skript. And the name of it is " + list);
         }
       }
     };
